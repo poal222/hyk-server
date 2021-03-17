@@ -6,7 +6,7 @@ spring:
     username: sa
     password:
 easyorm:
-  auto-ddl: true
+  auto-ddl: false
   default-schema: PUBLIC  # 默认使用的schema. mysql时则为数据库名
   dialect: h2 # 方言: h2,mysql,postgresql
 logging:
@@ -23,7 +23,7 @@ springdoc:
   group-configs:
     - group: hsweb4测试接口
       packages-to-scan:
-        - org.hswebframework.example.crud.web
+        - org.isdp.hyk.hospital.web
 #      paths-to-exclude:
 #        - /api/**
   cache:
