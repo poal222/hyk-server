@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.isdp</groupId>
+    <groupId>org.hswebframework.isdp</groupId>
     <artifactId>hyk-server</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -15,7 +15,7 @@
         <project.build.locales>zh_CN</project.build.locales>
         <java.version>1.8</java.version>
         <project.build.jdk>${java.version}</project.build.jdk>
-        <hsweb.framework.version>4.0.8</hsweb.framework.version>
+        <hsweb.framework.version>4.0.10-SNAPSHOT</hsweb.framework.version>
         <spring.boot.version>2.3.7.RELEASE</spring.boot.version>
         <r2dbc.version>Arabba-SR7</r2dbc.version>
     </properties>
@@ -54,25 +54,25 @@
                 <version>3.0.0</version>
             </plugin>
 
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
-                <configuration>
-                    <mainClass>org.hswebframework.example.crud.CrudApplication</mainClass>
-                    <layout>ZIP</layout>
-                    <layers>
-                        <enabled>true</enabled>
-                    </layers>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+                <!--<version>${spring.boot.version}</version>-->
+                <!--<configuration>-->
+                    <!--<mainClass>CrudApplication</mainClass>-->
+                    <!--<layout>ZIP</layout>-->
+                    <!--<layers>-->
+                        <!--<enabled>true</enabled>-->
+                    <!--</layers>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<goals>-->
+                            <!--<goal>repackage</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
 
         </plugins>
     </build>
@@ -96,9 +96,10 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
+        <!--上传-->
         <dependency>
             <groupId>org.hswebframework.web</groupId>
-            <artifactId>hsweb-commons-crud</artifactId>
+            <artifactId>hsweb-system-file</artifactId>
             <version>${hsweb.framework.version}</version>
         </dependency>
 
@@ -174,7 +175,37 @@
             <artifactId>knife4j-springdoc-ui</artifactId>
             <version>2.0.5</version>
         </dependency>
+        <!--日志管理  start-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-access-logging-api</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-access-logging-aop</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <!--日志管理  end-->
+        <!--认证-权限  start-->
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-authorization-default</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <!--权限控制-->
 
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-system-authorization-default</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hswebframework.web</groupId>
+            <artifactId>hsweb-authorization-basic</artifactId>
+            <version>${hsweb.framework.version}</version>
+        </dependency>
+        <!--认证-权限  end-->
     </dependencies>
     <dependencyManagement>
         <dependencies>

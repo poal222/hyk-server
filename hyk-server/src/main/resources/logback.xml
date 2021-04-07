@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="120 seconds" debug="false">
+    <!-- scan: 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+     scanPeriod: 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+     debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+-->
+    <!--控制台输出appender-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--设置输出格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <!--设置编码-->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!-- 错误日志路径 -->
+    <!--<property name="FILE_PATH_ERROR" value="${CY_LOG_HOME}/core-error.log"/>-->
+    <!--<property name="FILE_PATH_WARN" value="${CY_LOG_HOME}/core-warn.log"/>-->
+    <!--<property name="FILE_PATH_INFO" value="${CY_LOG_HOME}/core.log"/>-->
+    <!--<property name="FILE_PATH_ALL_INFO" value="${CY_LOG_HOME}/core-all.log"/>-->
+    <!--<property name="FILE_PATH_DEBUG" value="${CY_LOG_HOME}/core-debug.log"/>-->
+     异步日志提取调用者数据标识 true/false
+    <property name="includeCallerData" value="true"/>
+    <!-- 异步日志的队列容量 -->
+    <property name="queueSize" value="256"/>
+    <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] [%c][%M][%L] - %msg%n"/>
+
+    <!--<appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">-->
+        <!--&lt;!&ndash; 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 &ndash;&gt;-->
+        <!--<discardingThreshold>0</discardingThreshold>-->
+        <!--&lt;!&ndash; 更改默认的队列的深度,该值会影响性能.默认值为256 &ndash;&gt;-->
+        <!--<queueSize>2048</queueSize>-->
+        <!--<includeCallerData>true</includeCallerData>-->
+        <!--&lt;!&ndash; 添加附加的appender,最多只能添加一个 &ndash;&gt;-->
+        <!--<appender-ref ref="FILE" />-->
+    <!--</appender>-->
+
+    <!--&lt;!&ndash; 测试环境+开发环境. 多个使用逗号隔开. &ndash;&gt;-->
+    <!--<springProfile name="test,dev">-->
+        <!--<logger name="org.hswebframework.isdp.hyk" level="DEBUG" additivity="true">-->
+            <!--<appender-ref ref="console"/>-->
+            <!--<appender-ref ref="ErrorLOGEventPublisher"/>-->
+        <!--</logger>-->
+        <!--&lt;!&ndash;<root level="INFO">&ndash;&gt;-->
+            <!--&lt;!&ndash;<appender-ref ref="CONSOLE" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<appender-ref ref="ErrorLOGEventPublisher" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</root>&ndash;&gt;-->
+    <!--</springProfile>-->
+
+    <!--&lt;!&ndash; 生产环境. &ndash;&gt;-->
+    <!--<springProfile name="prod">-->
+        <!--<logger name="org.hswebframework.isdp.hyk" level="INFO" additivity="false">-->
+            <!--<appender-ref ref="console"/>-->
+        <!--</logger>-->
+    <!--</springProfile>-->
+
+    <!--<logger name="root" level="info" additivity="false">-->
+        <!--<appender-ref ref="console"/>-->
+        <!--<appender-ref ref="ErrorLOGEventPublisher"/>-->
+    <!--</logger>-->
+
+    <logger name="org.hswebframework.isdp" level="debug" additivity="false">
+    <appender-ref ref="console"/>
+    <!--<appender-ref ref="ErrorLOGEventPublisher"/>-->
+    </logger>
+</configuration>
