@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hswebframework.isdp.hyk.organization.OrgDimensionType;
+import org.hswebframework.isdp.hyk.organization.OrgExtendService;
+import org.hswebframework.isdp.hyk.organization.vo.IsdpOrganVo;
 import org.hswebframework.web.api.crud.entity.PagerResult;
 import org.hswebframework.web.api.crud.entity.QueryOperation;
 import org.hswebframework.web.api.crud.entity.QueryParamEntity;
@@ -32,6 +34,8 @@ public class OrganizationController {
 
     @Autowired
     private DefaultDimensionService dimensionService;
+    @Autowired
+    private OrgExtendService orgExtendService;
 
     @GetMapping("/_all/tree")
     @Authorize(merge = false)
@@ -72,7 +76,15 @@ public class OrganizationController {
             .execute(Mono::just)
             .as(dimensionService::queryPager);
     }
-
+//    @GetMapping("/_queryWithTenant")
+//    @QueryAction
+//    @QueryOperation(summary = "查询结构列表")
+//    public Mono<PagerResult<DimensionEntity>> queryWithTenant(@Parameter(hidden = true) QueryParamEntity entity) {
+//        return entity
+//                .toNestQuery(q -> q.where(DimensionEntity::getTypeId, orgDimensionTypeId))
+//                .execute(Mono::just)
+//                .as(dimensionService::queryPager);
+//    }
     @PatchMapping
     @SaveAction
     @Operation(summary = "保存机构信息")
@@ -82,7 +94,17 @@ public class OrganizationController {
             .as(dimensionService::save)
             .then();
     }
-
+    @PatchMapping
+    @SaveAction
+    @Operation(summary = "保存机构信息,saas模式下，带租户id")
+    public Mono<Void> saveOrgWithTenant(@RequestBody Flux<IsdpOrganVo> entityFlux) {
+       Flux item1= entityFlux.map((isdpOrganVo -> isdpOrganVo.getDimensionEntity()));
+        Flux item2= entityFlux.map((isdpOrganVo -> isdpOrganVo.getOrganExtendEntity()));
+        return Mono.zip(
+                dimensionService.insert(item1),
+                orgExtendService.insert(item2),
+                        (count, count1)->count);
+    }
     @DeleteMapping("/{id}")
     @DeleteAction
     @Operation(summary = "删除机构信息")

@@ -10,6 +10,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 用户信息扩展表
+ */
 @Table(name = "s_user_detail")
 @Getter
 @Setter

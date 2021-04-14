@@ -26,7 +26,7 @@ spring:
     password: rootroot
 
 easyorm:
-  auto-ddl: true
+  auto-ddl: false
   default-schema: hyk_db  # 默认使用的schema. mysql时则为数据库名
   dialect: mysql # 方言: h2,mysql,postgresql
 logging:

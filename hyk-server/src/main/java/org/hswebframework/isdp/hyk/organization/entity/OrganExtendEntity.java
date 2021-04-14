@@ -16,22 +16,35 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 机构类型，区分省直、市直、区县、保荐机构
+ *
+ * 机构扩展表，
+ * 涵盖机构类型，租户id等信息
+ *
  */
-@Table(name = "s_organ_Type")
+@Table(name = "s_organ_extend")
 @Getter
 @Setter
-public class OrganTypeEntity extends GenericEntity<String> {
+public class OrganExtendEntity extends GenericEntity<String> {
 
 	@Schema(description = "机构id")
 	@ColumnType(javaType = String.class)
 	private String id;
 
 	//枚举 机构类型
-	@Schema(description = "机构类型，区分省直、市直、区县、保荐机构")
+	@Schema(description = "district(\"行政区\"),\n" +
+			"    organization(\"机构\"),\n" +
+			"    company(\"法人\"),\n" +
+			"    departmetn(\"部门\"),\n" +
+			"    employee(\"员工\"),\n" +
+			"    position(\"岗位\");")
 	@Column(length = 32)
 	@EnumCodec
 	@ColumnType(javaType = String.class)
 	private OrganEnum organType;
+	//枚举 机构类型
+	@Schema(description = "租户id")
+	@Column(length = 64)
+	@ColumnType(javaType = String.class)
+	private String tenantId;
 
 }

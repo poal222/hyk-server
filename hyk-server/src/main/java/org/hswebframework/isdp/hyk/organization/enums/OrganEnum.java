@@ -12,10 +12,12 @@ import org.hswebframework.web.dict.EnumDict;
 )
 public enum OrganEnum implements EnumDict<String> {
 
-    ProviceOrgan("省直机构"),
-    CityOragn("市直机构"),
-    CountyOrgan("区县机构"),
-	FinancialOrgan("金融机构"),
+    district("行政区"),
+    organization("机构"),
+    company("法人"),
+    departmetn("部门"),
+    employee("员工"),
+    position("岗位");
 	;
     private final String text;
     @Override

@@ -2,6 +2,7 @@ package org.hswebframework.isdp.hyk.tenant.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.hswebframework.web.authorization.DimensionType;
 import org.hswebframework.web.dict.EnumDict;
 @Getter
 @AllArgsConstructor
@@ -17,5 +18,7 @@ public enum TenantDimensionType implements EnumDict<String> {
         return name();
 
     }
+
+
 }
 

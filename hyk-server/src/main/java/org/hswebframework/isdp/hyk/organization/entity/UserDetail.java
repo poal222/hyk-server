@@ -4,8 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hswebframework.isdp.hyk.tenant.entity.TenantMemberDetail;
 import org.hswebframework.web.system.authorization.api.entity.UserEntity;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
@@ -37,8 +39,8 @@ public class UserDetail {
     @Schema(description = "创建时间")
     private long createTime;
 
-//    @Schema(description = "租户信息")
-//    private List<TenantMemberDetail> tenants;
+    @Schema(description = "租户信息")
+    private List<TenantMemberDetail> tenants;
 
     private boolean tenantDisabled;
 
