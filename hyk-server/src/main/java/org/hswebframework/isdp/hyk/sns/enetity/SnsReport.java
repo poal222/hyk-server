@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-@Table(name="symphony_report")
-public class SymphonyReport extends GenericEntity<String> {
+@Table(name="Sns_report")
+public class SnsReport extends GenericEntity<String> {
 
     /** 举报人 id */
     private  String reportuserid;

@@ -4,8 +4,11 @@ import org.hswebframework.web.api.crud.entity.GenericEntity;
 
 import javax.persistence.Table;
 
-@Table(name="symphony_pointtransfer")
-public class SymphonyPointtransfer extends GenericEntity<String> {
+/**
+ * @author 王岗
+ */
+@Table(name="sns_pointtransfer")
+public class SnsPointtransfer extends GenericEntity<String> {
    
     /** 源账户 id */
     private  String fromid;

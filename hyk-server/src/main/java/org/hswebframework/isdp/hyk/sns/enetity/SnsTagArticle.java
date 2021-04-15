@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-@Table(name="symphony_tag_article")
-public class SymphonyTagArticle implements Serializable,Cloneable{
+@Table(name="Sns_tag_article")
+public class SnsTagArticle implements Serializable,Cloneable{
    
     /** 帖子 id */
     private  String  articleOid ;

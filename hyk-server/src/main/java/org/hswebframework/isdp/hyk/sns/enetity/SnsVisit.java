@@ -5,8 +5,8 @@ import org.hswebframework.web.api.crud.entity.GenericEntity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name="symphony_visit")
-public class SymphonyVisit extends GenericEntity<String> {
+@Table(name="sns_visit")
+public class SnsVisit extends GenericEntity<String> {
 
     /** 浏览链接 */
     private  String visiturl;

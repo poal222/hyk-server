@@ -4,8 +4,11 @@ import org.hswebframework.web.api.crud.entity.GenericEntity;
 
 import javax.persistence.Table;
 
-@Table(name="symphony_follow")
-public class SymphonyFollow extends GenericEntity<String> {
+/**
+ * 关注表
+ */
+@Table(name="Sns_follow")
+public class SnsFollow extends GenericEntity<String> {
 
     /**
      * 关注者 id

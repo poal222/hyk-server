@@ -8,7 +8,7 @@ import javax.persistence.Table;
  *  领域表
  */
 @Table(name="SNS_DOMAIN")
-public class SymphonyDomain extends GenericEntity<String> {
+public class SnsDomain extends GenericEntity<String> {
   
     /** 领域标题 */
     private  String domainTitle ;

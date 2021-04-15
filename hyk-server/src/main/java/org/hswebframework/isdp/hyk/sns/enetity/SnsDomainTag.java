@@ -9,8 +9,8 @@ import java.util.Date;
 /**
  * 领域 - 标签关联表
  */
-@Table(name="symphony_domain_tag")
-public class SymphonyDomainTag extends GenericEntity<String> {
+@Table(name="Sns_domain_tag")
+public class SnsDomainTag extends GenericEntity<String> {
 
     /** 领域 id */
     private String domainOid ;

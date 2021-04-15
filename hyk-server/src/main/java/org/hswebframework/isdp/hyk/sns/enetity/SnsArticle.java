@@ -11,12 +11,12 @@ import javax.persistence.Table;
 import java.sql.JDBCType;
 
 /**
- * sns 主题表实体
+ * sns 文章表
  */
 @Table(name="SNS_ARTICLE")
 @Getter
 @Setter
-public class SymphonyArticle extends GenericEntity<String> {
+public class SnsArticle extends GenericEntity<String> {
 
     /** 主题名称 */
     @Column(length = 64, nullable = false)
@@ -97,7 +97,7 @@ public class SymphonyArticle extends GenericEntity<String> {
     @Column(length = 64)
     @Schema(description = "作者id")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
-    private String syncwithsymphonyclient ;
+    private String syncwithSnsclient ;
 
     /** 0：CodeMirror-Markdown*/
     @Column(length = 3)
@@ -109,9 +109,9 @@ public class SymphonyArticle extends GenericEntity<String> {
     @Schema(description = "0：正常，1：封禁，2：锁定")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     private String articlestatus ;
-    /** 文章类型  0：普通帖子，1：机要，2：同城广播，3：思绪*/
+    /** 文章类型  0：普通帖子，1：机要，2：同城广播，3：思绪,5:问答,6:小视频*/
     @Column(length = 64)
-    @Schema(description = "0：普通帖子，1：机要，2：同城广播，3：思绪")
+    @Schema(description = "文章类型  0：普通帖子，1：机要，2：同城广播，3：思绪,5:问答,6:小视频")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     private String articletype ;
     /** 帖子点赞计数 */

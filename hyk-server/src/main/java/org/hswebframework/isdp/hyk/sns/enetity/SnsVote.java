@@ -5,8 +5,8 @@ import org.hswebframework.web.api.crud.entity.GenericEntity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name="symphony_vote")
-public class SymphonyVote extends GenericEntity<String> {
+@Table(name="sns_vote")
+public class SnsVote extends GenericEntity<String> {
 
     /** 投票者 id */
     private String userid;

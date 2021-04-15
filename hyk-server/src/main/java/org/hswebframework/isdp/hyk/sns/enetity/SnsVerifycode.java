@@ -5,8 +5,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name="symphony_verifycode")
-public class SymphonyVerifycode extends GenericEntity<String> {
+@Table(name="Sns_verifycode")
+public class SnsVerifycode extends GenericEntity<String> {
 
     /** 接收用户 id */
     private String userid ;

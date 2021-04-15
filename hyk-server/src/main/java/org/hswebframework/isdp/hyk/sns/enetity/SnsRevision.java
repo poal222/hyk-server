@@ -6,8 +6,8 @@ import java.io.Serializable;
 /**
  * 修订表
  */
-@Table(name="SYMPHONY_REVISION")
-public class SymphonyRevision implements Serializable,Cloneable{
+@Table(name="Sns_REVISION")
+public class SnsRevision implements Serializable,Cloneable{
 
     /** 0：帖子，1：回帖 */
     private String revisiondatatype  ;

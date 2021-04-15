@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-@Table(name="symphony_reward")
-public class SymphonyReward implements Serializable,Cloneable {
+@Table(name="Sns_reward")
+public class SnsReward implements Serializable,Cloneable {
 
     /** 打赏人 id */
     private  String senderid;
