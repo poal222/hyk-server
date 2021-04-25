@@ -161,19 +161,19 @@
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>2.1.4</version>
+            <version>2.1.8</version>
         </dependency>
 
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-webflux-ui</artifactId>
-            <version>1.4.5</version>
+            <version>1.5.7</version>
         </dependency>
 
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-springdoc-ui</artifactId>
-            <version>2.0.5</version>
+            <version>3.0.2</version>
         </dependency>
         <!--日志管理  start-->
         <dependency>
@@ -206,6 +206,13 @@
             <version>${hsweb.framework.version}</version>
         </dependency>
         <!--认证-权限  end-->
+        <!--验证码  start-->
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        <!--验证码  end-->
     </dependencies>
     <dependencyManagement>
         <dependencies>

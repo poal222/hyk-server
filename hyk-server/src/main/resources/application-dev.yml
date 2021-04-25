@@ -1,0 +1,91 @@
+server:
+  port: 8844
+  max-http-header-size: 64KB
+  error:
+    include-message: always
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: dev
+  application:
+    name: isdp-platform
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: true
+    default-property-inclusion: non_null
+  resources:
+    static-locations: file:./static,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/, classpath:/public/
+  r2dbc:
+    #    url: r2dbc:postgresql://localhost:5432/jetlinks #postgresql请使用此配置
+    url: r2dbc:mysql://localhost:3306/hyk_db # mysql请使用此配置
+#    url: r2dbc:h2:file:///./data/h2db/jetlinks
+    username: root
+    password: rootroot
+
+easyorm:
+  auto-ddl: false
+  default-schema: hyk_db  # 默认使用的schema. mysql时则为数据库名
+  dialect: mysql # 方言: h2,mysql,postgresql
+logging:
+  level:
+    org.hswebframework: debug
+    org.hswebframework.expands: error
+    org.springframework: debug
+    org.springframework.transaction: debug
+    org.springframework.data.r2dbc.connectionfactory: warn
+    io.micrometer: warn
+    system: debug
+    org.isdp.hyk: debug
+
+hsweb:
+  webflux:
+    response-wrapper:
+      enabled: true # 将响应结果包装为{"status":200,"result":{}}
+      excludes: #不包装的类spring和springdoc
+        - org.springframework
+        - org.springdoc
+  cors:
+    enable: true
+    configs:
+      - path: /**
+        allowed-headers: "*"
+        allowed-methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+        allowed-origins: ["*"]
+        allow-credentials: false
+        max-age: 1800
+  dict:
+    enum-packages: org.hswebframework
+  file:
+    upload:
+      static-file-path: ./static/upload
+      static-location: http://localhost:8844/upload
+  authorize:
+    auto-parse: true
+  cache:
+    type: guava
+# 验证码
+captcha:
+  enabled: true # 开启验证码
+  ttl: 2m #验证码过期时间,2分钟
+springdoc:
+  group-configs:
+    - group: organization
+      packages-to-scan:
+        - org.hswebframework.isdp.organization
+    - group: sns
+      packages-to-scan:
+        - org.hswebframework.isdp.sns
+    - group: authorization
+      packages-to-scan:
+        - org.hswebframework.isdp.authentication
+        - org.hswebframework.web.authorization.basic.web
+#    - group: authorization
+#      packages-to-scan:
+#        - org.hswebframework.web.authorization.basic.web
+#      paths-to-exclude:
+#        - /api/**
+  cache:
+    disabled: true

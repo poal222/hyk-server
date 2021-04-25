@@ -43,7 +43,7 @@ logging:
 hsweb:
   webflux:
     response-wrapper:
-      enabled: false # 将响应结果包装为{"status":200,"result":{}}
+      enabled: true # 将响应结果包装为{"status":200,"result":{}}
       excludes: #不包装的类
         - org.springframework
   cors:
@@ -66,11 +66,9 @@ hsweb:
 
 springdoc:
   group-configs:
-    - group: 华医酷接口中心
+    - group: isdpopenapi
       packages-to-scan:
-        - org.hswebframework.isdp.hyk.hospital.web
-        - org.hswebframework.isdp
-        - org.hswebframework
+        - org.hswebframework.isdp.hyk.organization
 #      paths-to-exclude:
 #        - /api/**
   cache:

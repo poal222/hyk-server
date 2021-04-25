@@ -4,19 +4,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.hswebframework.ezorm.rdb.mapping.ReactiveRepository;
-import org.hswebframework.isdp.hyk.hospital.HBKPO;
-import org.hswebframework.web.authorization.annotation.SaveAction;
-import org.hswebframework.web.crud.service.ReactiveCrudService;
-import org.hswebframework.web.crud.web.reactive.ReactiveCrudController;
-import org.hswebframework.web.crud.web.reactive.ReactiveServiceCrudController;
 import org.hswebframework.isdp.hyk.hospital.entity.HospitalAppiontment;
-import org.hswebframework.isdp.hyk.hospital.entity.HospitalDuration;
 import org.hswebframework.isdp.hyk.hospital.service.HospitalAppiontmentService;
 import org.hswebframework.isdp.hyk.hospital.service.HospitalDurationService;
+import org.hswebframework.web.authorization.annotation.SaveAction;
+import org.hswebframework.web.crud.service.ReactiveCrudService;
+import org.hswebframework.web.crud.web.reactive.ReactiveServiceCrudController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
