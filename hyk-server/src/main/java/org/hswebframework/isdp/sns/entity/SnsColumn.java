@@ -58,6 +58,27 @@ public class SnsColumn extends GenericEntity<String> {
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
 	@Schema(description = "专栏价格，付费元")
 	private String price;
+	/**
+	 * 法律确认书
+	 */
+	@Column(length = 5)
+	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@Schema(description = "法律确认书")
+	private String confirm;
+	/**
+	 * 版权类型
+	 */
+	@Column(length = 64)
+	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@Schema(description = "版权类型：origin：原创，copyright：被授权")
+	private String copyright;
+	/**
+	 * 版权类型
+	 */
+	@Column(length = 255)
+	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@Schema(description = "适合读者")
+	private String scope;
 
 	/**
 	 * 发表文章数
