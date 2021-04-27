@@ -13,6 +13,7 @@ import org.springdoc.webflux.core.SpringDocWebFluxConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -21,12 +22,14 @@ import org.springframework.stereotype.Component;
 @SpringBootApplication
 @EnableEasyormRepository("org.hswebframework.**.entity")
 @EnableAccessLogger //启动异步日志
-//@EnableAopAuthorize //开启AOP权限控制
+@EnableAopAuthorize //开启AOP权限控制
+@EnableCaching  //开启cache
 public class CrudApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CrudApplication.class, args);
     }
+
 
     @Configuration(proxyBeanMethods = false)
     @OpenAPIDefinition(

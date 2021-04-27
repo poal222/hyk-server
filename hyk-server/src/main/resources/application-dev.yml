@@ -24,7 +24,14 @@ spring:
 #    url: r2dbc:h2:file:///./data/h2db/jetlinks
     username: root
     password: rootroot
-
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
+#    lettuce:
+#      pool:
+#        max-active: 1024
+#    timeout: 20s
+#    serializer: jdk # 设置fst时,redis key使用string序列化,value使用 fst序列化.
 easyorm:
   auto-ddl: false
   default-schema: hyk_db  # 默认使用的schema. mysql时则为数据库名
@@ -65,7 +72,9 @@ hsweb:
   authorize:
     auto-parse: true
   cache:
-    type: guava
+    type: redis
+    redis:
+      local-cache-type: guava
 # 验证码
 captcha:
   enabled: true # 开启验证码
@@ -82,9 +91,9 @@ springdoc:
       packages-to-scan:
         - org.hswebframework.isdp.authentication
         - org.hswebframework.web.authorization.basic.web
-#    - group: authorization
-#      packages-to-scan:
-#        - org.hswebframework.web.authorization.basic.web
+    - group: sdqysb
+      packages-to-scan:
+        - org.hswebframework.isdp.sdqysb.web
 #      paths-to-exclude:
 #        - /api/**
   cache:

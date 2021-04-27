@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hswebframework.isdp.organization.OrgDimensionType;
+import org.hswebframework.isdp.organization.organ.entity.OrganExtendEntity;
 import org.hswebframework.isdp.organization.organ.service.OrgExtendService;
 import org.hswebframework.isdp.organization.vo.IsdpOrganVo;
 import org.hswebframework.web.api.crud.entity.PagerResult;
@@ -85,15 +86,29 @@ public class OrganizationController {
 //                .execute(Mono::just)
 //                .as(dimensionService::queryPager);
 //    }
+//    @PatchMapping
+//    @SaveAction
+//    @Operation(summary = "保存机构信息")
+//    public Mono<Void> saveOrg(@RequestBody Flux<DimensionEntity> entityFlux) {
+//        return entityFlux
+//            .doOnNext(entity -> entity.setTypeId(orgDimensionTypeId))
+//            .as(dimensionService::save)
+//            .then();
+//    }
     @PatchMapping
     @SaveAction
     @Operation(summary = "保存机构信息")
-    public Mono<Void> saveOrg(@RequestBody Flux<DimensionEntity> entityFlux) {
-        return entityFlux
-            .doOnNext(entity -> entity.setTypeId(orgDimensionTypeId))
-            .as(dimensionService::save)
-            .then();
+    public Mono<Integer> saveOrg(@RequestBody IsdpOrganVo isdpOrganVo) {
+        DimensionEntity dimensionEntity=  isdpOrganVo.getDimensionEntity();
+        dimensionEntity.setTypeId(orgDimensionTypeId);
+        OrganExtendEntity organExtendEntity = isdpOrganVo.getOrganExtendEntity();
+        return Mono.zip(
+                dimensionService.save(Mono.just(dimensionEntity)),
+                orgExtendService.save(Mono.just(organExtendEntity)),
+                (count, count1)->1
+        );
     }
+
     @PatchMapping({"/saveOrgWithTenant"})
     @SaveAction
     @Operation(summary = "保存机构信息,saas模式下，带租户id")

@@ -40,7 +40,10 @@ public class OrganExtendEntity extends GenericEntity<String> {
 	@ColumnType(javaType = String.class)
 	private String shortName;
 
-
+	@Schema(description = "所属行政区划")
+	@Column(length = 64)
+	@ColumnType(javaType = String.class)
+	private String originCode;
 
 	@Schema(description = "租户id")
 	@Column(length = 64)

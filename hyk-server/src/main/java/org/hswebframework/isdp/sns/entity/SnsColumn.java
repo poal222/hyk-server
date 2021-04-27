@@ -40,8 +40,8 @@ public class SnsColumn extends GenericEntity<String> {
 	/**
 	 * 专栏封面
 	 */
-	@Column(length = 255)
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@Column
+	@ColumnType(jdbcType = JDBCType.LONGNVARCHAR)
 	@Schema(description = "专栏封面")
 	private String cover;
 	/**
@@ -49,7 +49,7 @@ public class SnsColumn extends GenericEntity<String> {
 	 */
 	@Column(length = 3)
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Schema(description = "专栏状态:0：审核不通过。1：审核通过，2：被注销")
+	@Schema(description = "专栏状态:0：审核不通过。1：审核通过，2：被注销,3:待审核")
 	private String status;
 	/**
 	 * 专栏付费价格
