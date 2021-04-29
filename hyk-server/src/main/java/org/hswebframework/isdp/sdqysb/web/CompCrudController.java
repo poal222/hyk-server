@@ -120,7 +120,6 @@ public class CompCrudController implements ReactiveCrudController<CompBasicInfo,
                     compInfoVo.setLastUpdateTime(compBasicInfo.getLastUpdateTime());
                     compInfoVo.setVersion(compBasicInfo.getVersion());
                     compInfoVo.setStatus(compBasicInfo.getStatus());
-
                     CompBusinessInfo compBusinessInfoMono = objects.getT2();
                     compInfoVo.setMajorBussiness(compBusinessInfoMono.getMajorBussiness());
                     compInfoVo.setOwnStatus(compBusinessInfoMono.getOwnStatus());

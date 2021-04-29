@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.hswebframework.isdp.tenant.entity.TenantMemberDetail;
 import org.hswebframework.web.system.authorization.api.entity.UserEntity;
 
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -40,6 +42,18 @@ public class UserDetail {
 
     @Schema(description = "租户信息")
     private List<TenantMemberDetail> tenants;
+
+
+    /**
+     * 企业级开发平台拓展信息 主岗信息
+     */
+    @NotBlank(message = "所属公司id")
+    private String coId;
+    @NotBlank(message = "所属部门id")
+    private String departmentId;
+    @NotBlank(message = "所属科室/岗位id")
+    private String officesId;
+
 
     private boolean tenantDisabled;
 

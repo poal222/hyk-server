@@ -50,4 +50,6 @@ public class OrganExtendEntity extends GenericEntity<String> {
 	@ColumnType(javaType = String.class)
 	private String tenantId;
 
+
+
 }

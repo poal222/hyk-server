@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
+import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
+import org.hswebframework.web.crud.generator.Generators;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -48,6 +50,7 @@ public class CompHonorInfo extends GenericEntity<String> {
     @Schema(description = "最后一次更新时间")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     @Column(name = "last_update_time", length = 64)
+    @DefaultValue(generator = Generators.CURRENT_TIME)
     private String lastUpdateTime;
     /**
      * 版本
@@ -55,5 +58,6 @@ public class CompHonorInfo extends GenericEntity<String> {
     @Schema(description = "版本")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     @Column(name = "version", length = 64)
+
     private String version;
 }

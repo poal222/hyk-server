@@ -43,8 +43,8 @@ public class OrganizationController {
     @Operation(summary = "获取全部机构信息(树结构)")
     public Flux<DimensionEntity> getAllOrgTree() {
         return getAllOrg()
-            .collectList()
-            .flatMapIterable(list -> TreeSupportEntity.list2tree(list, DimensionEntity::setChildren));
+                .collectList()
+                .flatMapIterable(list -> TreeSupportEntity.list2tree(list, DimensionEntity::setChildren));
     }
 
     @GetMapping("/_all")
@@ -52,20 +52,20 @@ public class OrganizationController {
     @Operation(summary = "获取全部机构信息")
     public Flux<DimensionEntity> getAllOrg() {
         return Authentication
-            .currentReactive()
-            .flatMapMany(auth -> {
-                List<String> list = auth.getDimensions(orgDimensionTypeId)
-                    .stream()
-                    .map(Dimension::getId)
-                    .collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(list)) {
-                    return dimensionService.findById(list);
-                }
-                return dimensionService
-                    .createQuery()
-                    .where(DimensionEntity::getTypeId, orgDimensionTypeId)
-                    .fetch();
-            });
+                .currentReactive()
+                .flatMapMany(auth -> {
+                    List<String> list = auth.getDimensions(orgDimensionTypeId)
+                            .stream()
+                            .map(Dimension::getId)
+                            .collect(Collectors.toList());
+                    if (CollectionUtils.isNotEmpty(list)) {
+                        return dimensionService.findById(list);
+                    }
+                    return dimensionService
+                            .createQuery()
+                            .where(DimensionEntity::getTypeId, orgDimensionTypeId)
+                            .fetch();
+                });
     }
 
     @GetMapping("/_query")
@@ -73,11 +73,12 @@ public class OrganizationController {
     @QueryOperation(summary = "查询结构列表")
     public Mono<PagerResult<DimensionEntity>> queryDimension(@Parameter(hidden = true) QueryParamEntity entity) {
         return entity
-            .toNestQuery(q -> q.where(DimensionEntity::getTypeId, orgDimensionTypeId))
-            .execute(Mono::just)
-            .as(dimensionService::queryPager);
+                .toNestQuery(q -> q.where(DimensionEntity::getTypeId, orgDimensionTypeId))
+                .execute(Mono::just)
+                .as(dimensionService::queryPager);
     }
-//    @GetMapping("/_queryWithTenant")
+
+    //    @GetMapping("/_queryWithTenant")
 //    @QueryAction
 //    @QueryOperation(summary = "查询结构列表")
 //    public Mono<PagerResult<DimensionEntity>> queryWithTenant(@Parameter(hidden = true) QueryParamEntity entity) {
@@ -99,13 +100,31 @@ public class OrganizationController {
     @SaveAction
     @Operation(summary = "保存机构信息")
     public Mono<Integer> saveOrg(@RequestBody IsdpOrganVo isdpOrganVo) {
-        DimensionEntity dimensionEntity=  isdpOrganVo.getDimensionEntity();
+        DimensionEntity dimensionEntity = isdpOrganVo.getDimensionEntity();
         dimensionEntity.setTypeId(orgDimensionTypeId);
         OrganExtendEntity organExtendEntity = isdpOrganVo.getOrganExtendEntity();
         return Mono.zip(
                 dimensionService.save(Mono.just(dimensionEntity)),
                 orgExtendService.save(Mono.just(organExtendEntity)),
-                (count, count1)->1
+                (count, count1) -> 1
+        );
+    }
+
+    @GetMapping("/{id}")
+    @QueryAction
+    @Operation(summary = "根据id查询某机构")
+    public Mono<IsdpOrganVo> queryByOrganId(@PathVariable String id) {
+        IsdpOrganVo isdpOrganVo = new IsdpOrganVo();
+        return Mono.zip(
+                dimensionService.createQuery()
+                        .where("id", id).fetchOne().switchIfEmpty(Mono.just(new DimensionEntity())),
+                orgExtendService.createQuery()
+                        .where("id", id).fetchOne().switchIfEmpty(Mono.just(new OrganExtendEntity())),
+                (p1, p2) -> {
+                    isdpOrganVo.setOrganExtendEntity(p2);
+                    isdpOrganVo.setDimensionEntity(p1);
+                    return isdpOrganVo;
+                }
         );
     }
 
@@ -113,22 +132,23 @@ public class OrganizationController {
     @SaveAction
     @Operation(summary = "保存机构信息,saas模式下，带租户id")
     public Mono<Void> saveOrgWithTenant(@RequestBody Flux<IsdpOrganVo> entityFlux) {
-       Flux item1= entityFlux.map((isdpOrganVo -> isdpOrganVo.getDimensionEntity()));
-        Flux item2= entityFlux.map((isdpOrganVo -> isdpOrganVo.getOrganExtendEntity()));
+        Flux item1 = entityFlux.map((isdpOrganVo -> isdpOrganVo.getDimensionEntity()));
+        Flux item2 = entityFlux.map((isdpOrganVo -> isdpOrganVo.getOrganExtendEntity()));
 
 
         return Mono.zip(
                 dimensionService.insert(item1),
                 orgExtendService.insert(item2),
-                        (count, count1)->count);
+                (count, count1) -> count);
     }
+
     @DeleteMapping("/{id}")
     @DeleteAction
     @Operation(summary = "删除机构信息")
     public Mono<Void> deleteOrg(@PathVariable String id) {
         return dimensionService
-            .deleteById(Mono.just(id))
-            .then();
+                .deleteById(Mono.just(id))
+                .then();
     }
 
 

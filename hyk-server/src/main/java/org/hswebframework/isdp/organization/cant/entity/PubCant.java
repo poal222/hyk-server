@@ -4,61 +4,81 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
-import org.hswebframework.web.api.crud.entity.GenericEntity;
+import org.hswebframework.web.api.crud.entity.GenericTreeSortSupportEntity;
+import org.hswebframework.web.validator.CreateGroup;
 
 import javax.persistence.Column;
+import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 import java.sql.JDBCType;
+import java.util.List;
 
 /**
  * 行政区划表
  */
-@Table(name = "pub_cant")
+@Table(name = "pub_cant",  indexes = {
+		@Index(name = "idx_cant_path", columnList = "path")
+})
 @Getter
 @Setter
-public class PubCant extends GenericEntity<String> {
+public class PubCant extends GenericTreeSortSupportEntity<String> {
 
-	@Schema(description = "区划编码")
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Column(name = "CANT_CODE",length = 20)
-	private String cantCode;
+	@Override
+	@Pattern(
+			regexp = "^[0-9a-zA-Z_\\-]+$",
+			message = "ID只能由数字,字母,下划线和中划线组成",
+			groups = CreateGroup.class)
+	public String getId() {
+		return super.getId();
+	}
 
-	@Schema(description = "区划名称")
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Column(name = "CANT_NAME",length = 250)
-	private String cantName;
+    @Schema(description = "区划编码")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "CANT_CODE", length = 20)
+    private String cantCode;
 
-
-	@Schema(description = "区划简称")
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Column(name = "SHORT_NAME",length = 250)
-	private String shortName;
-
-	@Schema(description = "区划类型")
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Column(name = "CANT_TYPE",length = 10)
-	private String cantType;
+    @Schema(description = "区划名称")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "CANT_NAME", length = 250)
+    private String cantName;
 
 
-	@Schema(description = "上级行政区划")
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Column(name = "SUPER_CODE",length = 20)
-	private String superCode;
+    @Schema(description = "区划简称")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "SHORT_NAME", length = 250)
+    private String shortName;
+
+    @Schema(description = "区划类型")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "CANT_TYPE", length = 10)
+    private String cantType;
 
 
-	@Schema(description = "国家码")
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Column(name = "COUNTRY_CODE",length = 30)
-	private String countryCode;
+    @Schema(description = "上级行政区划")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "SUPER_CODE", length = 20)
+    private String superCode;
 
-	@Schema(description = "备注，中国用CN")
-	@ColumnType(jdbcType = JDBCType.VARCHAR)
-	@Column(name = "CANT_NOTE",length = 255)
-	private String cantNote;
 
-	@Schema(description = "是否启用：0：不启用，1：启用")
-	@ColumnType(jdbcType = JDBCType.INTEGER)
-	@Column(name = "status")
-	private int status;
+    @Schema(description = "国家码")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "COUNTRY_CODE", length = 30)
+    private String countryCode;
+
+    @Schema(description = "备注，中国用CN")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "CANT_NOTE", length = 255)
+    private String cantNote;
+
+    @Schema(description = "是否启用：0：不启用，1：启用")
+    @ColumnType(jdbcType = JDBCType.INTEGER)
+    @Column(name = "status")
+    private int status;
+
+
+    @Schema(description = "子节点")
+    private List<PubCant> children;
+
 
 }
