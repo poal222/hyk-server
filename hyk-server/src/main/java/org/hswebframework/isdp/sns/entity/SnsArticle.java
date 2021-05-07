@@ -4,7 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
+import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
+import org.hswebframework.web.crud.generator.Generators;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -18,16 +21,30 @@ import java.sql.JDBCType;
 @Setter
 public class SnsArticle extends GenericEntity<String> {
 
-	/** 主题名称 */
+	/**
+	 * 主题名称
+	 */
 	@Column(length = 64, nullable = false)
 	@Schema(description = "主题名称")
 	private String articleTitle;
-	/** 帖子标签 */
+
+	/**
+	 * 主题名称
+	 */
+	@Column(length = 255, nullable = false)
+	@Schema(description = "主题封面")
+	private String cover;
+
+	/**
+	 * 帖子标签
+	 */
 	@Column
 	@Schema(description = "帖子标签，英文状态逗号分隔")
 	@ColumnType(jdbcType = JDBCType.LONGNVARCHAR)
 	private String articleTags;
-	/** 作者id */
+	/**
+	 * 作者id
+	 */
 	@Column(length = 64)
 	@Schema(description = "作者id")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
@@ -37,17 +54,23 @@ public class SnsArticle extends GenericEntity<String> {
 	@Schema(description = "帖子回帖计数")
 	@ColumnType(jdbcType = JDBCType.INTEGER)
 	private Integer articleCommentCount;
-	/** 浏览计数 */
+	/**
+	 * 浏览计数
+	 */
 	@Column
 	@Schema(description = "帖子浏览计数")
 	@ColumnType(jdbcType = JDBCType.INTEGER)
 	private Integer articleViewCount;
-	/** 正文内容 */
+	/**
+	 * 正文内容
+	 */
 	@Column
 	@Schema(description = "正文内容")
 	@ColumnType(jdbcType = JDBCType.LONGNVARCHAR)
-	private String articlecontent;
-	/** 帖子打赏区内容 */
+	private String articleContent;
+	/**
+	 * 帖子打赏区内容
+	 */
 	@Column(length = 254)
 	@Schema(description = "帖子打赏区内容")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
@@ -62,15 +85,21 @@ public class SnsArticle extends GenericEntity<String> {
 	@Schema(description = "帖子访问路径")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
 	private String articlepermalink;
-	/** 创建时间 */
+	/**
+	 * 创建时间
+	 */
 	@Column(length = 64)
 	@Schema(description = "创建时间")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@DefaultValue(generator = Generators.CURRENT_TIME)
 	private String articleCreateTime;
-	/** 帖子更新时间 */
+	/**
+	 * 帖子更新时间
+	 */
 	@Column(length = 64)
 	@Schema(description = "帖子更新时间")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@LastModifiedDate
 	private String articleUpdateTime;
 	/**  */
 	@Column(length = 64)
@@ -104,9 +133,11 @@ public class SnsArticle extends GenericEntity<String> {
 	@Schema(description = "0：CodeMirror-Markdown")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
 	private String articleEditorType;
-	/** 0：正常，1：封禁，2：锁定 */
+	/**
+	 * 0：正常，1：封禁，2：锁定
+	 */
 	@Column(length = 64)
-	@Schema(description = "0：正常，1：封禁，2：锁定")
+	@Schema(description = "0：发布，1：保存，2：待审核，3：未通过，")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
 	private String articlestatus;
 	/** 文章类型  0：普通帖子，1：机要，2：同城广播，3：思绪,5:问答,6:小视频*/
@@ -216,7 +247,7 @@ public class SnsArticle extends GenericEntity<String> {
 	private String articleShowAd;
 
 	@Column(length = 3)
-	@Schema(description = "是否是原创：0 不同意原创声明，1 同意原创声明")
+	@Schema(description = "是否是原创：0 同意原创声明，1 不同意原创声明")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
 	private String isOriginality;
 

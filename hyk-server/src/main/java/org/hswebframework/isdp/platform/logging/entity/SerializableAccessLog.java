@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
+import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.utils.StringUtils;
 import org.hswebframework.web.bean.FastBeanCopier;
+import org.hswebframework.web.crud.generator.Generators;
 import org.hswebframework.web.logging.AccessLogger;
 import org.hswebframework.web.logging.AccessLoggerInfo;
 import org.springframework.http.HttpHeaders;
@@ -120,7 +122,8 @@ public class SerializableAccessLog implements Serializable {
      * @see System#currentTimeMillis()
      */
     @Schema(description = "请求时间")
-	@ColumnType(jdbcType = JDBCType.DATE)
+    @ColumnType(jdbcType = JDBCType.DATE)
+    @DefaultValue(generator = Generators.CURRENT_TIME)
     private long requestTime;
 
     /**

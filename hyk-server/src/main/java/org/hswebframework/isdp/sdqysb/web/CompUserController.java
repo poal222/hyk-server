@@ -3,13 +3,19 @@ package org.hswebframework.isdp.sdqysb.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.hswebframework.ezorm.rdb.mapping.ReactiveRepository;
 import org.hswebframework.isdp.organization.UserDetailService;
 import org.hswebframework.isdp.organization.entity.UserDetail;
+import org.hswebframework.isdp.sdqysb.entity.CompUser;
 import org.hswebframework.isdp.sdqysb.service.CompUserService;
+import org.hswebframework.isdp.sdqysb.vo.CompUserDetail;
 import org.hswebframework.isdp.sdqysb.vo.CompUserVo;
 import org.hswebframework.web.authorization.Authentication;
 import org.hswebframework.web.authorization.annotation.Resource;
 import org.hswebframework.web.authorization.exception.UnAuthorizedException;
+import org.hswebframework.web.crud.web.reactive.ReactiveCrudController;
+import org.hswebframework.web.system.authorization.api.entity.UserEntity;
+import org.hswebframework.web.system.authorization.api.service.UserService;
 import org.hswebframework.web.system.authorization.api.service.reactive.ReactiveUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +25,8 @@ import reactor.core.publisher.Mono;
 @RestController
 @Resource(id = "sdsb.compUsers", name = "企业用户管理")
 @Tag(name = "企业用户管理")
-public class CompUserController {
+public class CompUserController implements ReactiveCrudController<CompUser, String> {
 
-    @Autowired
-    private UserDetailService userDetailService;
     @Autowired
     private ReactiveUserService reactiveUserService;
     @Autowired
@@ -70,12 +74,33 @@ public class CompUserController {
      */
     @PutMapping
     @Operation(summary = "保存企业用户详情")
-    public Mono<Void> saveUserDetail(@RequestBody Mono<UserDetail> request) {
-        return Authentication
-                .currentReactive()
-                .zipWith(request)
-                .switchIfEmpty(Mono.error(UnAuthorizedException::new))
-                .flatMap(tp2 -> userDetailService.saveUserDetail(tp2.getT1().getUser().getId(), tp2.getT2()));
+    public Mono<Integer> saveUserDetail(@RequestBody Mono<CompUserDetail> request) {
+       return Mono.zip(
+                request.map(compUserDetail -> {
+                    CompUser compUser = new CompUser();
+                    compUser.setId(compUserDetail.getId());
+                    compUser.setCompName(compUserDetail.getCompName());
+                    compUser.setCompType(compUserDetail.getCompType());
+                    compUser.setCompUserId(compUserDetail.getId());
+                    compUser.setRecommendId(compUserDetail.getRecommendId());
+                    compUser.setCompStatus(compUserDetail.getCompStatus());
+//                    compUser.setLastUpdateTime(System.currentTimeMillis());
+                    return compUser;
+                }).as(compUserService::save),
+                request.map(compUserDetail -> {
+                    UserEntity userEntity = new UserEntity();
+                    userEntity.setId(compUserDetail.getId());
+                    userEntity.setName(compUserDetail.getName());
+                    userEntity.setPassword(compUserDetail.getPassword());
+                    userEntity.setUsername(compUserDetail.getUsername());
+                    userEntity.setType("qyyh");
+                    return userEntity;
+                }).as(reactiveUserService::saveUser),
+                ((t1,t2)->t1.getTotal()));
     }
 
+    @Override
+    public ReactiveRepository<CompUser, String> getRepository() {
+        return compUserService.getRepository();
+    }
 }

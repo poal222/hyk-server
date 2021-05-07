@@ -44,9 +44,9 @@ public class UserDetailEntity extends GenericEntity<String> {
 	@NotBlank(message = "所属公司id")
 	private String coId;
 	@Column(nullable = false,length = 64)
-	@NotBlank(message = "所属部门id")
+//	@NotBlank(message = "所属部门id")
 	private String departmentId;
 	@Column(nullable = false,length = 64)
-	@NotBlank(message = "所属科室/岗位id")
+//	@NotBlank(message = "所属科室/岗位id")
 	private String officesId;
 }

@@ -93,6 +93,7 @@ public class CompWorkFlowController implements ReactiveCrudController<CompBasicI
      */
     @PostMapping(value = "/todoList")
     @Operation(summary = "查询当前用户所在单位的待办")
+
     public Flux<CompAuditing> queryTodoList() {
         return Authentication
                 .currentReactive()
@@ -250,14 +251,14 @@ public class CompWorkFlowController implements ReactiveCrudController<CompBasicI
                 }).doOnNext(compAuditing1 -> {
             orgExtendService.findById(compAuditing1.getFirstAuditing())
                     .map(organExtendEntity -> {
-                        if ("organization".equals(organExtendEntity.getOrganType().getValue())) {
-                            compAuditing.setSecondAuditing("SDSDFJRJDGLJ");
+                        if ("organization".equals(organExtendEntity.getOrganType())) {
+                            compAuditing.setSecondAuditing("SDSDFJRJDG LJ");
                         }
-                        if ("company".equals(organExtendEntity.getOrganType().getValue())) {
+                        if ("company".equals(organExtendEntity.getOrganType())) {
                             compAuditing.setSecondAuditing("SDSDFJRJDGLJ");
                         }
                         // 省市县审批
-                        if ("district".equals(organExtendEntity.getOrganType().getValue())) {
+                        if ("district".equals(organExtendEntity.getOrganType())) {
 
                             return Mono.zip(
                                     orgExtendService.findById(compAuditing1.getFirstAuditing()),

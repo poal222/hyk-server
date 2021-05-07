@@ -3,12 +3,14 @@ package org.hswebframework.isdp.organization;
 import lombok.AllArgsConstructor;
 import org.hswebframework.isdp.organization.entity.UserDetail;
 import org.hswebframework.isdp.organization.entity.UserDetailEntity;
+import org.hswebframework.web.api.crud.entity.TransactionManagers;
 import org.hswebframework.web.bean.FastBeanCopier;
 import org.hswebframework.web.crud.service.GenericReactiveCrudService;
 import org.hswebframework.web.system.authorization.api.entity.UserEntity;
 import org.hswebframework.web.system.authorization.api.service.reactive.ReactiveUserService;
 import org.hswebframework.web.validator.ValidatorUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -30,7 +32,7 @@ public class UserDetailService extends GenericReactiveCrudService<UserDetailEnti
                 .with(tp4.getT2()));
     }
 
-
+    @Transactional(rollbackFor = Exception.class, transactionManager = TransactionManagers.r2dbcTransactionManager)
     public Mono<Void> saveUserDetail(String userId, UserDetail request) {
         ValidatorUtils.tryValidate(request);
         UserDetailEntity entity = FastBeanCopier.copy(request, new UserDetailEntity());
@@ -39,10 +41,12 @@ public class UserDetailService extends GenericReactiveCrudService<UserDetailEnti
         UserEntity userEntity = new UserEntity();
         userEntity.setId(userId);
         userEntity.setName(request.getName());
-
+        userEntity.setPassword(request.getPassword());
+        userEntity.setUsername(request.getUsername());
+        userEntity.setType("glyh");
         return save(Mono.just(entity))
-            .then(userService.saveUser(Mono.just(userEntity)))
-            .then();
+                .then(userService.saveUser(Mono.just(userEntity)))
+                .then();
     }
 
 }

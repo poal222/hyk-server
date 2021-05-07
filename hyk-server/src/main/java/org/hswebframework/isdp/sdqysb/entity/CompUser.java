@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
+import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
 import javax.persistence.Column;
@@ -57,6 +58,7 @@ public class CompUser  extends GenericEntity<String> {
     @Schema(description = "最后一次修改时间")
     @ColumnType(jdbcType = JDBCType.DATE)
     @Column(name = "last_update_time")
+    @DefaultValue(generator = "current_time")
     private Date lastUpdateTime ;
 
 

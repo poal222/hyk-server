@@ -1,9 +1,11 @@
-package org.hswebframework.isdp.organization.entity;
+package org.hswebframework.isdp.sdqysb.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hswebframework.isdp.organization.entity.UserDetailEntity;
+import org.hswebframework.isdp.sdqysb.entity.CompUser;
 import org.hswebframework.isdp.tenant.entity.TenantMemberDetail;
 import org.hswebframework.web.system.authorization.api.entity.UserEntity;
 
@@ -13,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDetail {
+public class CompUserDetail {
 
     @Schema(description = "用户ID")
     private String id;
@@ -59,24 +61,32 @@ public class UserDetail {
 
     private boolean tenantDisabled;
 
-    public static UserDetail of(UserEntity entity) {
-        return new UserDetail().with(entity);
+
+
+    private String usccId ;
+    private String compName ;
+    private String compType ;
+    private String compUserId ;
+    private String recommendId ;
+    private String compStatus ;
+
+
+    public static CompUserDetail of(UserEntity entity) {
+        return new CompUserDetail().with(entity);
     }
 
 
-    public UserDetail with(UserDetailEntity entity) {
-        this.setAvatar(entity.getAvatar());
-        this.setDescription(entity.getDescription());
-        this.setTelephone(entity.getTelephone());
-        this.setEmail(entity.getEmail());
-        this.setCoId(entity.getCoId());
-        this.setDepartmentId(entity.getDepartmentId());
-        this.setOfficesId(entity.getOfficesId());
-        this.setDescription(entity.getDescription());
+    public CompUserDetail with(CompUser entity) {
+        entity.setId(entity.getId());
+        entity.setCompName(entity.getCompName());
+        entity.setCompType(entity.getCompType());
+        entity.setCompUserId(entity.getId());
+        entity.setRecommendId(entity.getRecommendId());
+        entity.setCompStatus(entity.getCompStatus());
         return this;
     }
 
-    public UserDetail with(UserEntity entity) {
+    public CompUserDetail with(UserEntity entity) {
         this.setId(entity.getId());
         this.setName(entity.getName());
         if (entity.getCreateTime() != null) {

@@ -3,12 +3,9 @@ package org.hswebframework.isdp.sns.web;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.hswebframework.ezorm.rdb.executor.SqlRequests;
 import org.hswebframework.ezorm.rdb.executor.SyncSqlExecutor;
 import org.hswebframework.ezorm.rdb.executor.wrapper.MapResultWrapper;
-import org.hswebframework.ezorm.rdb.executor.wrapper.ResultWrappers;
 import org.hswebframework.ezorm.rdb.mapping.ReactiveRepository;
-import org.hswebframework.isdp.sns.entity.SnsArticle;
 import org.hswebframework.isdp.sns.entity.SnsColumnArticles;
 import org.hswebframework.isdp.sns.service.SnsArticlesService;
 import org.hswebframework.isdp.sns.service.SnsColumnArticlesService;
@@ -26,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-import javax.management.remote.rmi._RMIConnection_Stub;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -94,34 +90,12 @@ public class SnsColumnArticlesCmd implements ReactiveCrudController<SnsColumnArt
             deviceAlterData.getSnsArticle().setArticlestatus((String) map.get("articlestatus"));
             templist.add(deviceAlterData);
         }
-
         PagerResult pagerResult = new PagerResult();
         pagerResult.setData(resultList);
         pagerResult.setPageIndex(1);
         pagerResult.setPageSize(10);
         pagerResult.setTotal(1000);
         return Mono.just(pagerResult);
-
-//        List<Map<String, Object>> resultList = syncSqlExecutor.execute(
-//                SqlRequests.of("select * from sns_article t1,sns_column_aritcles t2\n" +
-//                        "where t1.id=t2.article_Id " +
-//                        "and t2.column_id='" +id+"' " +
-//                        "and t1.articlestatus=" +state+" "), wrapper.wrapColumn(););
-        //        return snsColumnArticlesService.createQuery()
-//				.where("columnId",id)
-//				.fetch()
-//				.collectList()
-//				.flatMapMany(members -> {
-//					return snsArticlesService
-//							.createQuery()
-//							.where().in(SnsArticle::getId, members.ge)
-//							.fetch()
-//							.collectMap(TenantEntity::getId)
-//							.flatMapMany(tenants -> Flux
-//									.fromIterable(members)
-//									.map(member -> TenantMemberDetail.of(member, tenants.get(member.getTenantId()))));
-//				});
-//						});
     }
 
 }

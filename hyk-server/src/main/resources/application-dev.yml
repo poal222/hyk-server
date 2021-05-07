@@ -84,13 +84,14 @@ springdoc:
     - group: organization
       packages-to-scan:
         - org.hswebframework.isdp.organization
+        - org.hswebframework.web.system.authorization.defaults.webflux
     - group: sns
       packages-to-scan:
         - org.hswebframework.isdp.sns
     - group: authorization
       packages-to-scan:
         - org.hswebframework.isdp.authentication
-        - org.hswebframework.web.authorization.basic.web
+
     - group: sdqysb
       packages-to-scan:
         - org.hswebframework.isdp.sdqysb.web
