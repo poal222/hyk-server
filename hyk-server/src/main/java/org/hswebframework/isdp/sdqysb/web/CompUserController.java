@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RequestMapping("/sdsb/compUsers")
 @RestController
 @Resource(id = "sdsb.compUsers", name = "企业用户管理")
@@ -75,13 +77,15 @@ public class CompUserController implements ReactiveCrudController<CompUser, Stri
     @PutMapping
     @Operation(summary = "保存企业用户详情")
     public Mono<Integer> saveUserDetail(@RequestBody Mono<CompUserDetail> request) {
+        String id = UUID.randomUUID().toString();
        return Mono.zip(
                 request.map(compUserDetail -> {
                     CompUser compUser = new CompUser();
-                    compUser.setId(compUserDetail.getId());
+                    compUser.setUsccId(compUserDetail.getUsccId());
+                    compUser.setId(compUserDetail.getId()==null?id:compUserDetail.getId());
                     compUser.setCompName(compUserDetail.getCompName());
                     compUser.setCompType(compUserDetail.getCompType());
-                    compUser.setCompUserId(compUserDetail.getId());
+                    compUser.setCompUserId(compUserDetail.getId()==null?id:compUserDetail.getId());
                     compUser.setRecommendId(compUserDetail.getRecommendId());
                     compUser.setCompStatus(compUserDetail.getCompStatus());
 //                    compUser.setLastUpdateTime(System.currentTimeMillis());
@@ -89,7 +93,7 @@ public class CompUserController implements ReactiveCrudController<CompUser, Stri
                 }).as(compUserService::save),
                 request.map(compUserDetail -> {
                     UserEntity userEntity = new UserEntity();
-                    userEntity.setId(compUserDetail.getId());
+                    userEntity.setId(compUserDetail.getId()==null?id:compUserDetail.getId());
                     userEntity.setName(compUserDetail.getName());
                     userEntity.setPassword(compUserDetail.getPassword());
                     userEntity.setUsername(compUserDetail.getUsername());

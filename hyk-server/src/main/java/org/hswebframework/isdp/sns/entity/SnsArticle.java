@@ -42,6 +42,7 @@ public class SnsArticle extends GenericEntity<String> {
 	@Schema(description = "帖子标签，英文状态逗号分隔")
 	@ColumnType(jdbcType = JDBCType.LONGNVARCHAR)
 	private String articleTags;
+
 	/**
 	 * 作者id
 	 */
@@ -137,7 +138,7 @@ public class SnsArticle extends GenericEntity<String> {
 	 * 0：正常，1：封禁，2：锁定
 	 */
 	@Column(length = 64)
-	@Schema(description = "0：发布，1：保存，2：待审核，3：未通过，")
+	@Schema(description = "0：发布，1：保存，2：待审核，3：未通过，4：取消发布，")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
 	private String articlestatus;
 	/** 文章类型  0：普通帖子，1：机要，2：同城广播，3：思绪,5:问答,6:小视频*/
@@ -255,5 +256,18 @@ public class SnsArticle extends GenericEntity<String> {
 	@Schema(description = "扩展链接，扩展链接将以“了解更多”的形式展示在文末")
 	@ColumnType(jdbcType = JDBCType.VARCHAR)
 	private String entendLinks;
-
+	/**
+	 * 专栏id
+	 */
+	@Column(name = "column_id" ,length = 64)
+	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@Schema(description = "专栏id")
+	private String columnId;
+	/**
+	 * 价格设置
+	 */
+	@Column(name = "is_purchase",length = 3)
+	@ColumnType(jdbcType = JDBCType.VARCHAR)
+	@Schema(description = "价格设置：0，免费，1：付费")
+	private String isPurchase;
 }

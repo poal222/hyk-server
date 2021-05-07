@@ -50,7 +50,7 @@ public class CompUser  extends GenericEntity<String> {
     @Column(name = "recommend_id",length = 250)
     private String recommendId ;
     /** comp_status;企业状态 */
-    @Schema(description = "企业状态")
+    @Schema(description = "企业状态 0：待审核，1：审核通过，2：审核不通过")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     @Column(name = "comp_status",length = 250)
     private String compStatus ;

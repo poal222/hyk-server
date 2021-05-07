@@ -1,7 +1,6 @@
 package org.hswebframework.isdp.sns.service;
 
 import org.hswebframework.isdp.sns.entity.SnsArticle;
-import org.hswebframework.isdp.sns.entity.SnsColumnArticles;
 import org.hswebframework.web.crud.service.GenericReactiveCrudService;
 import org.springframework.stereotype.Service;
 
