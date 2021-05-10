@@ -62,14 +62,13 @@ public class HospitalBaseController implements ReactiveServiceCrudController<Hos
 		Flux listFlux = Flux.fromIterable(hospitalVo.getHospitialEmployeeList())
 				.flatMap(hospitialEmployee -> {
 					hospitialEmployee.setHospitalId(hospitalBase.getId());
-
 					return Mono.just(hospitialEmployee);
 				});
 		return Mono.zip(
 				hospitalBaseService.insert(Mono.just(hospitalBase)),
 				hospitalEmployeeService.insert(listFlux),
 				(count, count1)->count);
-
-
 	}
+	//  查询状态是未审核的医馆信息
+
 }

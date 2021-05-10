@@ -91,7 +91,7 @@ springdoc:
     - group: authorization
       packages-to-scan:
         - org.hswebframework.isdp.authentication
-
+        - org.hswebframework.web.authorization.basic.web
     - group: sdqysb
       packages-to-scan:
         - org.hswebframework.isdp.sdqysb.web

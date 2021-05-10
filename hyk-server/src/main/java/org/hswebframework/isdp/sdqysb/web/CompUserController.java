@@ -10,6 +10,7 @@ import org.hswebframework.isdp.sdqysb.entity.CompUser;
 import org.hswebframework.isdp.sdqysb.service.CompUserService;
 import org.hswebframework.isdp.sdqysb.vo.CompUserDetail;
 import org.hswebframework.isdp.sdqysb.vo.CompUserVo;
+import org.hswebframework.web.api.crud.entity.TransactionManagers;
 import org.hswebframework.web.authorization.Authentication;
 import org.hswebframework.web.authorization.annotation.Resource;
 import org.hswebframework.web.authorization.exception.UnAuthorizedException;
@@ -18,6 +19,7 @@ import org.hswebframework.web.system.authorization.api.entity.UserEntity;
 import org.hswebframework.web.system.authorization.api.service.UserService;
 import org.hswebframework.web.system.authorization.api.service.reactive.ReactiveUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -76,31 +78,31 @@ public class CompUserController implements ReactiveCrudController<CompUser, Stri
      */
     @PutMapping
     @Operation(summary = "保存企业用户详情")
-    public Mono<Integer> saveUserDetail(@RequestBody Mono<CompUserDetail> request) {
+    @Transactional(rollbackFor = Exception.class, transactionManager = TransactionManagers.r2dbcTransactionManager)
+    public Mono<Integer> saveUserDetail(@RequestBody CompUserDetail compUserDetail) {
         String id = UUID.randomUUID().toString();
-       return Mono.zip(
-                request.map(compUserDetail -> {
-                    CompUser compUser = new CompUser();
-                    compUser.setUsccId(compUserDetail.getUsccId());
-                    compUser.setId(compUserDetail.getId()==null?id:compUserDetail.getId());
-                    compUser.setCompName(compUserDetail.getCompName());
-                    compUser.setCompType(compUserDetail.getCompType());
-                    compUser.setCompUserId(compUserDetail.getId()==null?id:compUserDetail.getId());
-                    compUser.setRecommendId(compUserDetail.getRecommendId());
-                    compUser.setCompStatus(compUserDetail.getCompStatus());
-//                    compUser.setLastUpdateTime(System.currentTimeMillis());
-                    return compUser;
-                }).as(compUserService::save),
-                request.map(compUserDetail -> {
-                    UserEntity userEntity = new UserEntity();
-                    userEntity.setId(compUserDetail.getId()==null?id:compUserDetail.getId());
-                    userEntity.setName(compUserDetail.getName());
-                    userEntity.setPassword(compUserDetail.getPassword());
-                    userEntity.setUsername(compUserDetail.getUsername());
-                    userEntity.setType("qyyh");
-                    return userEntity;
-                }).as(reactiveUserService::saveUser),
-                ((t1,t2)->t1.getTotal()));
+        CompUser compUser = new CompUser();
+        UserEntity userEntity = new UserEntity();
+
+            if ("null".equalsIgnoreCase(compUserDetail.getId())) {
+                compUserDetail.setId(id);
+            }
+            compUser.setUsccId(compUserDetail.getUsccId());
+            compUser.setId(compUserDetail.getId() == null ? id : compUserDetail.getId());
+            compUser.setCompName(compUserDetail.getCompName());
+            compUser.setCompType(compUserDetail.getCompType());
+            compUser.setCompUserId(compUserDetail.getId() == null ? id : compUserDetail.getId());
+            compUser.setRecommendId(compUserDetail.getRecommendId());
+            compUser.setCompStatus(compUserDetail.getCompStatus());
+          userEntity.setId(compUserDetail.getId() == null ? id : compUserDetail.getId());
+            userEntity.setName(compUserDetail.getName());
+            userEntity.setPassword(compUserDetail.getPassword());
+            userEntity.setUsername(compUserDetail.getUsername());
+            userEntity.setType("qyyh");
+        return Mono.zip(
+                compUserService.save(Mono.just(compUser)),
+                reactiveUserService.saveUser(Mono.just(userEntity)),
+                ((t1, t2) -> 1));
     }
 
     @Override

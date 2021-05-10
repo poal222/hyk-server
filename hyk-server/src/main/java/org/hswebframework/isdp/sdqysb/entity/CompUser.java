@@ -15,7 +15,7 @@ import java.sql.JDBCType;
 /**
  * 企业用户详情表：企业用户自行注册时，后台会看到该表记录信息
  */
-@Table(name = "comp_main")
+@Table(name = "comp_user")
 @Getter
 @Setter
 public class CompUser  extends GenericEntity<String> {
