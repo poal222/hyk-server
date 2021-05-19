@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 
 @RequestMapping("/sdsb/workflow")
 @RestController
-@Resource(id = "sdsb.CompWorkFlowController", name = "企业信息上报审批流程管理")
+@Resource(id = "sdsb-CompWorkFlowController", name = "企业信息上报审批流程管理")
 @Tag(name = "企业信息上报审批流程管理")
 public class CompWorkFlowController implements ReactiveCrudController<CompBasicInfo, String> {
     /**
@@ -122,7 +122,7 @@ public class CompWorkFlowController implements ReactiveCrudController<CompBasicI
     }
 
     /**
-     * 根据登陆id查询他的审批待办
+     * 发起流程
      *
      * @return 用户详情
      */
@@ -132,11 +132,11 @@ public class CompWorkFlowController implements ReactiveCrudController<CompBasicI
         CompAuditing compAuditing = compWfInfoVo.getCompAuditing();
         return Flux.merge(
                 compBasicInfoService.save(Mono.just(compWfInfoVo.getCompBasicInfo())),
-                compBusinessInfoService.save(Mono.just(compWfInfoVo.getCompBusinessInfo())),
-                compFinanceService.save(Mono.just(compWfInfoVo.getCompFinance())),
+//                compBusinessInfoService.save(Mono.just(compWfInfoVo.getCompBusinessInfo())),
+//                compFinanceService.save(Mono.just(compWfInfoVo.getCompFinance())),
                 compHonorInfoService.save(Mono.just(compWfInfoVo.getCompHonorInfo())),
-                compIpoInfoService.save(Mono.just(compWfInfoVo.getCompIpoInfo())),
-                compPersonInfoServicee.save(Mono.just(compWfInfoVo.getCompPersonInfo())),
+//                compIpoInfoService.save(Mono.just(compWfInfoVo.getCompIpoInfo())),
+//                compPersonInfoServicee.save(Mono.just(compWfInfoVo.getCompPersonInfo())),
                 compAuditingService.save(createAuditing(compWfInfoVo,compAuditing))
         ).map(saveResult -> saveResult.getTotal());
     }

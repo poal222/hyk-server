@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.isdp.organization.entity.UserDetailEntity;
 import org.hswebframework.web.system.authorization.api.entity.UserEntity;
-import org.springframework.util.IdGenerator;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -29,8 +28,8 @@ public class HUserDetail implements Serializable {
         userEntity.setPassword(this.getPassword());
         userEntity.setName(this.getNikename());
 //        userEntity.setCreateTime(Long.parseLong(System::currentTimeMillis));
-        userEntity.setStatus(Byte.decode("0") );//不启用
-        userEntity.setCreateTimeNow();//不启用
+        userEntity.setStatus(Byte.decode("1"));//启用
+        userEntity.setCreateTimeNow();
         userEntity.setUsername(this.getUsername());
 
         userEntity.setType(this.type);

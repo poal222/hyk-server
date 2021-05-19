@@ -115,4 +115,5 @@ public class CompIpoInfo extends GenericEntity<String> {
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     @Column(name = "version", length = 64)
     private String version;
+
 }

@@ -22,7 +22,7 @@ public class CompHonorInfo extends GenericEntity<String> {
     @Schema(description = "企业ID")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     @Column(name = "comp_id", length = 64)
-    private Integer compId;
+    private String compId;
     /**
      * 所获荣誉
      */
@@ -58,6 +58,28 @@ public class CompHonorInfo extends GenericEntity<String> {
     @Schema(description = "版本")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     @Column(name = "version", length = 64)
-
     private String version;
+    /**
+     * 发明专利
+     */
+    @Schema(description = "发明专利")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "invention", length = 64)
+    private String invention ;
+    /**
+     * 使用新型
+     */
+    @Schema(description = "使用新型")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "utility", length = 64)
+    private String utility ;
+
+    /**
+     * 企业特性
+     */
+    @Schema(description = "企业特性")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "tags")
+    private String tags;
+
 }

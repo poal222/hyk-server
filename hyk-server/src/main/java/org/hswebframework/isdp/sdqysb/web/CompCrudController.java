@@ -6,19 +6,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hswebframework.ezorm.rdb.mapping.ReactiveRepository;
 import org.hswebframework.isdp.sdqysb.entity.*;
 import org.hswebframework.isdp.sdqysb.service.*;
-import org.hswebframework.isdp.sdqysb.vo.CompInfoVo;
+import org.hswebframework.isdp.sdqysb.vo.CompWfInfoVo;
 import org.hswebframework.web.authorization.annotation.Resource;
 import org.hswebframework.web.crud.web.reactive.ReactiveCrudController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequestMapping("/sdsb/CompInfo")
 @RestController
-@Resource(id = "sdsb.CompCrudController", name = "企业填报信息管理")
+@Resource(id = "sdsb-CompCrudController", name = "企业填报信息管理")
 @Tag(name = "企业填报信息管理")
 public class CompCrudController implements ReactiveCrudController<CompBasicInfo, String> {
     /**
@@ -57,17 +56,102 @@ public class CompCrudController implements ReactiveCrudController<CompBasicInfo,
     @Autowired
     private CompUserService compUserService;
     /**
+     * 资质
+     **/
+    @Autowired
+    private CompQualityService compQualityService;
+    /**
+     * 标准
+     **/
+    @Autowired
+    private CompStandardService compStandardService;
+    /**
      * 企业上市计划表
      **/
     @Autowired
     private CompIpoInfoService compIpoInfoService;
+    /**
+     * 企业上市计划表
+     **/
+    @Autowired
+    private CompStockService compStockService;
 
     @Override
     public ReactiveRepository<CompBasicInfo, String> getRepository() {
         return compBasicInfoService.getRepository();
     }
-//            2、查询最新版本的上报信息
-//3、保存填报信息
+
+    /**
+     * 保存填报信息
+     *
+     * @return 保存填报信息
+     */
+    @PostMapping(value = "/saveCompInfo")
+    @Operation(summary = "保存填报信息")
+    @Transactional
+    public Flux<Object> saveCompInfo(@RequestBody CompWfInfoVo compWfInfoVo) {
+        String version = String.valueOf(System.currentTimeMillis());
+        compWfInfoVo.getCompBasicInfo().setVersion(version);
+        compWfInfoVo.getCompHonorInfo().setVersion(version);
+        compWfInfoVo.getCompStock().setVersion(version);
+
+        compWfInfoVo.getPersonInfoList().stream()
+                .map(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(version);
+                    return compBusinessInfo;
+                });
+        Flux<CompPersonInfo> periinnfLFux = Mono.just(compWfInfoVo.getPersonInfoList()).flatMapMany(Flux::fromIterable);
+
+        compWfInfoVo.getCompBusinessInfoList().stream()
+                .map(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(version);
+                    return compBusinessInfo;
+                });
+        Flux<CompBusinessInfo> bussinessFlux = Mono.just(compWfInfoVo.getCompBusinessInfoList()).flatMapMany(Flux::fromIterable);
+
+
+        compWfInfoVo.getCompFinanceList().stream()
+                .map(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(version);
+                    return compBusinessInfo;
+                });
+
+        Flux<CompFinance> finnalLst = Mono.just(compWfInfoVo.getCompFinanceList()).flatMapMany(Flux::fromIterable);
+
+        compWfInfoVo.getCompQualityList().stream()
+                .map(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(version);
+                    return compBusinessInfo;
+                });
+        Flux<CompQuality> qompQuality = Mono.just(compWfInfoVo.getCompQualityList()).flatMapMany(Flux::fromIterable);
+
+        compWfInfoVo.getCompStandardList().stream()
+                .map(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(version);
+                    return compBusinessInfo;
+                });
+        Flux<CompStandard> qtandard = Mono.just(compWfInfoVo.getCompStandardList()).flatMapMany(Flux::fromIterable);
+
+        compWfInfoVo.getCompIpoInfoList().stream()
+                .map(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(version);
+                    return compBusinessInfo;
+                });
+        Flux<CompIpoInfo> qipo = Mono.just(compWfInfoVo.getCompIpoInfoList()).flatMapMany(Flux::fromIterable);
+
+        return Flux.merge(
+                compBasicInfoService.save(Mono.just(compWfInfoVo.getCompBasicInfo())),
+                compHonorInfoService.save(Mono.just(compWfInfoVo.getCompHonorInfo())),
+                compBusinessInfoService.insertBatch(bussinessFlux.collectList()),
+                compFinanceService.insertBatch(finnalLst.collectList()),
+                compQualityService.insertBatch(qompQuality.collectList()),
+                compStandardService.insertBatch(qtandard.collectList()),
+                compIpoInfoService.insertBatch(qipo.collectList()),
+                compPersonInfoServicee.insertBatch(periinnfLFux.collectList()),
+                compStockService.save(Mono.just(compWfInfoVo.getCompStock()))
+        );
+
+    }
 
     /**
      * 查询某版本的企业上报信息（审批等）
@@ -77,55 +161,59 @@ public class CompCrudController implements ReactiveCrudController<CompBasicInfo,
      */
     @GetMapping(value = "/queryCompInfoByVersion")
     @Operation(summary = "查询某版本的企业上报信息")
-    public Mono<CompInfoVo> queryCompInfoByVersion(
+    public Mono<CompWfInfoVo> queryCompInfoByVersion(
             @Parameter(name = "compId", description = "企业ID") @RequestParam(name = "compId") String compId,
             @Parameter(name = "version", description = "版本") @RequestParam(name = "version") String version) {
-        CompInfoVo compInfoVo = new CompInfoVo();
+        CompWfInfoVo compInfoVo = new CompWfInfoVo();
         return Mono.zip(
                 compBasicInfoService.createQuery()
                         .where("version", version)
                         .and("comp_id", compId)
                         .fetchOne().switchIfEmpty(Mono.just(new CompBasicInfo())),
                 compBusinessInfoService.createQuery().where("version", version).and("comp_id", compId)
-                        .fetchOne().switchIfEmpty(Mono.just(new CompBusinessInfo())),
+                        .fetch().switchIfEmpty(Mono.just(new CompBusinessInfo())).collectList(),
                 compFinanceService.createQuery().where("version", version).and("comp_id", compId)
-                        .fetchOne().switchIfEmpty(Mono.just(new CompFinance())),
+                        .fetch().switchIfEmpty(Mono.just(new CompFinance())).collectList(),
                 compHonorInfoService.createQuery().where("version", version).and("comp_id", compId)
                         .fetchOne().switchIfEmpty(Mono.just(new CompHonorInfo())),
                 compIpoInfoService.createQuery().where("version", version).and("comp_id", compId)
-                        .fetchOne().switchIfEmpty(Mono.just(new CompIpoInfo())),
+                        .fetch().switchIfEmpty(Mono.just(new CompIpoInfo())).collectList(),
                 compPersonInfoServicee.createQuery().where("version", version).and("comp_id", compId)
-                        .fetchOne().switchIfEmpty(Mono.just(new CompPersonInfo())),
+                        .fetch().switchIfEmpty(Mono.just(new CompPersonInfo())).collectList(),
                 compAuditingService.createQuery().where("version", version).and("comp_id", compId)
                         .fetchOne().switchIfEmpty(Mono.just(new CompAuditing())))
                 .map(objects -> {
-                    CompBasicInfo compBasicInfo = objects.getT1();
-                    compInfoVo.setCompId(compBasicInfo.getCompId());
-                    compInfoVo.setUsccId(compBasicInfo.getUsccId());
-                    compInfoVo.setRegTime(compBasicInfo.getRegTime());
-                    compInfoVo.setRegCapital(compBasicInfo.getRegCapital());
-                    compInfoVo.setRegCity(compBasicInfo.getRegCity());
-                    compInfoVo.setRegCounty(compBasicInfo.getRegCounty());
-                    compInfoVo.setRegAddress(compBasicInfo.getRegAddress());
-                    compInfoVo.setCompNature(compBasicInfo.getCompNature());
-                    compInfoVo.setIndustry(compBasicInfo.getIndustry());
-                    compInfoVo.setCompIntroduction(compBasicInfo.getCompIntroduction());
-                    compInfoVo.setStandardTypeId(compBasicInfo.getStandardTypeId());
-                    compInfoVo.setStandardType(compBasicInfo.getStandardType());
-                    compInfoVo.setIsGuidance(compBasicInfo.getIsGuidance());
-                    compInfoVo.setIsOpen(compBasicInfo.getIsOpen());
-                    compInfoVo.setIsDelete(compBasicInfo.getIsDelete());
-                    compInfoVo.setCreateUserId(compBasicInfo.getCreateUserId());
-                    compInfoVo.setCreateTime(compBasicInfo.getCreateTime());
-                    compInfoVo.setLastUpdateTime(compBasicInfo.getLastUpdateTime());
-                    compInfoVo.setVersion(compBasicInfo.getVersion());
-                    compInfoVo.setStatus(compBasicInfo.getStatus());
-                    CompBusinessInfo compBusinessInfoMono = objects.getT2();
-                    compInfoVo.setMajorBussiness(compBusinessInfoMono.getMajorBussiness());
-                    compInfoVo.setOwnStatus(compBusinessInfoMono.getOwnStatus());
-                    compInfoVo.setIncomePercent(compBusinessInfoMono.getIncomePercent());
+                    compInfoVo.setCompBasicInfo(objects.getT1());
+                    compInfoVo.setCompBusinessInfoList(objects.getT2());
+                    compInfoVo.setCompFinanceList(objects.getT3());
+                    compInfoVo.setCompHonorInfo(objects.getT4());
+                    compInfoVo.setCompIpoInfoList(objects.getT5());
+                    compInfoVo.setPersonInfoList(objects.getT6());
+                    compInfoVo.setCompAuditing(objects.getT7());
+
                     return compInfoVo;
-                });
+                }).zipWith(
+                        compQualityService.createQuery().where("version", version).and("comp_id", compId)
+                                .fetch().switchIfEmpty(Mono.just(new CompQuality())).collectList(),
+                        ((compWfInfoVo, compQuality) -> {
+                            compWfInfoVo.setCompQualityList(compQuality);
+                            return compWfInfoVo;
+                        })
+                ).zipWith(
+                        compStandardService.createQuery().where("version", version).and("comp_id", compId)
+                                .fetch().switchIfEmpty(Mono.just(new CompStandard())).collectList(),
+                        ((compWfInfoVo, compStandard) -> {
+                            compWfInfoVo.setCompStandardList(compStandard);
+                            return compWfInfoVo;
+                        })
+                ).zipWith(
+                        compStockService.createQuery().where("version", version).and("comp_id", compId)
+                                .fetchOne().switchIfEmpty(Mono.just(new CompStock())),
+                        ((compWfInfoVo, compStock) -> {
+                            compWfInfoVo.setCompStock(compStock);
+                            return compWfInfoVo;
+                        })
+                );
     }
 
 }

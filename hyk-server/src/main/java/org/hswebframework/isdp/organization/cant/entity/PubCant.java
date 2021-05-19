@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
 import org.hswebframework.web.api.crud.entity.GenericTreeSortSupportEntity;
-import org.hswebframework.web.validator.CreateGroup;
 
 import javax.persistence.Column;
 import javax.persistence.Index;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 import java.sql.JDBCType;
 import java.util.List;
 
@@ -25,10 +23,6 @@ import java.util.List;
 public class PubCant extends GenericTreeSortSupportEntity<String> {
 
 	@Override
-	@Pattern(
-			regexp = "^[0-9a-zA-Z_\\-]+$",
-			message = "ID只能由数字,字母,下划线和中划线组成",
-			groups = CreateGroup.class)
 	public String getId() {
 		return super.getId();
 	}

@@ -7,6 +7,7 @@ import org.hswebframework.isdp.hyk.hospital.entity.HospitalBase;
 import org.hswebframework.isdp.hyk.hospital.service.HospitalBaseService;
 import org.hswebframework.isdp.hyk.hospital.service.HospitalEmployeeService;
 import org.hswebframework.isdp.hyk.hospital.vo.HospitalVo;
+import org.hswebframework.web.authorization.annotation.Resource;
 import org.hswebframework.web.authorization.annotation.SaveAction;
 import org.hswebframework.web.crud.service.ReactiveCrudService;
 import org.hswebframework.web.crud.web.reactive.ReactiveServiceCrudController;
@@ -23,6 +24,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/hyk/hospitalBase")
 @Tag(name = "医馆基本信息")
+@Resource(id = "hospitalBase", name = "医馆基本信息")
 public class HospitalBaseController implements ReactiveServiceCrudController<HospitalBase,String> {
 
 	@Autowired

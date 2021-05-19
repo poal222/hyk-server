@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
 import org.hswebframework.ezorm.rdb.mapping.annotation.DefaultValue;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
+import org.hswebframework.web.crud.generator.Generators;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -19,11 +20,6 @@ import java.sql.JDBCType;
 @Getter
 @Setter
 public class CompUser  extends GenericEntity<String> {
-    /** id;id */
-    @Schema(description = "id")
-    @ColumnType(jdbcType = JDBCType.VARCHAR)
-    @Column(name = "id",length = 64)
-    private String id ;
     /** uscc_id;统一社会信用代码, */
     @Schema(description = "统一社会信用代码")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
@@ -58,7 +54,7 @@ public class CompUser  extends GenericEntity<String> {
     @Schema(description = "最后一次修改时间")
     @ColumnType(jdbcType = JDBCType.DATE)
     @Column(name = "last_update_time")
-    @DefaultValue(generator = "current_time")
+    @DefaultValue(generator = Generators.CURRENT_TIME)//逻辑默认值
     private Date lastUpdateTime ;
 
 

@@ -46,6 +46,7 @@ logging:
     io.micrometer: warn
     system: debug
     org.isdp.hyk: debug
+    org.isdp.sdqysb: debug
 
 hsweb:
   webflux:

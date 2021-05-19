@@ -4,22 +4,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hswebframework.ezorm.rdb.mapping.ReactiveRepository;
-import org.hswebframework.isdp.organization.UserDetailService;
-import org.hswebframework.isdp.organization.entity.UserDetail;
 import org.hswebframework.isdp.sdqysb.entity.CompUser;
 import org.hswebframework.isdp.sdqysb.service.CompUserService;
 import org.hswebframework.isdp.sdqysb.vo.CompUserDetail;
 import org.hswebframework.isdp.sdqysb.vo.CompUserVo;
+import org.hswebframework.utils.RandomUtil;
 import org.hswebframework.web.api.crud.entity.TransactionManagers;
-import org.hswebframework.web.authorization.Authentication;
+import org.hswebframework.web.authorization.annotation.Authorize;
 import org.hswebframework.web.authorization.annotation.Resource;
-import org.hswebframework.web.authorization.exception.UnAuthorizedException;
 import org.hswebframework.web.crud.web.reactive.ReactiveCrudController;
 import org.hswebframework.web.system.authorization.api.entity.UserEntity;
-import org.hswebframework.web.system.authorization.api.service.UserService;
 import org.hswebframework.web.system.authorization.api.service.reactive.ReactiveUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.IdGenerator;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +25,7 @@ import java.util.UUID;
 
 @RequestMapping("/sdsb/compUsers")
 @RestController
-@Resource(id = "sdsb.compUsers", name = "企业用户管理")
+@Resource(id = "sdsb-compUsers", name = "企业用户管理")
 @Tag(name = "企业用户管理")
 public class CompUserController implements ReactiveCrudController<CompUser, String> {
 
@@ -78,12 +76,12 @@ public class CompUserController implements ReactiveCrudController<CompUser, Stri
      */
     @PutMapping
     @Operation(summary = "保存企业用户详情")
+    @Authorize(ignore = true)
     @Transactional(rollbackFor = Exception.class, transactionManager = TransactionManagers.r2dbcTransactionManager)
     public Mono<Integer> saveUserDetail(@RequestBody CompUserDetail compUserDetail) {
-        String id = UUID.randomUUID().toString();
+        String id = RandomUtil.randomChar(30);
         CompUser compUser = new CompUser();
         UserEntity userEntity = new UserEntity();
-
             if ("null".equalsIgnoreCase(compUserDetail.getId())) {
                 compUserDetail.setId(id);
             }
