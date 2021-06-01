@@ -91,63 +91,79 @@ public class CompCrudController implements ReactiveCrudController<CompBasicInfo,
     @Transactional
     public Flux<Object> saveCompInfo(@RequestBody CompWfInfoVo compWfInfoVo) {
         String version = String.valueOf(System.currentTimeMillis());
+        if (compWfInfoVo.getCompBasicInfo().getVersion() != null && !"".equals(compWfInfoVo.getCompBasicInfo().getVersion())) {
+            version = compWfInfoVo.getCompBasicInfo().getVersion();
+        }
+
+        String compId =compWfInfoVo.getCompBasicInfo().getCompId();
+
         compWfInfoVo.getCompBasicInfo().setVersion(version);
         compWfInfoVo.getCompHonorInfo().setVersion(version);
         compWfInfoVo.getCompStock().setVersion(version);
-
+        String finalVersion = version;
         compWfInfoVo.getPersonInfoList().stream()
-                .map(compBusinessInfo -> {
-                    compBusinessInfo.setVersion(version);
-                    return compBusinessInfo;
+                .forEach(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(finalVersion);
                 });
         Flux<CompPersonInfo> periinnfLFux = Mono.just(compWfInfoVo.getPersonInfoList()).flatMapMany(Flux::fromIterable);
 
         compWfInfoVo.getCompBusinessInfoList().stream()
-                .map(compBusinessInfo -> {
-                    compBusinessInfo.setVersion(version);
-                    return compBusinessInfo;
+                .forEach(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(finalVersion);
                 });
         Flux<CompBusinessInfo> bussinessFlux = Mono.just(compWfInfoVo.getCompBusinessInfoList()).flatMapMany(Flux::fromIterable);
 
 
         compWfInfoVo.getCompFinanceList().stream()
-                .map(compBusinessInfo -> {
-                    compBusinessInfo.setVersion(version);
-                    return compBusinessInfo;
+                .forEach(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(finalVersion);
                 });
 
         Flux<CompFinance> finnalLst = Mono.just(compWfInfoVo.getCompFinanceList()).flatMapMany(Flux::fromIterable);
 
         compWfInfoVo.getCompQualityList().stream()
-                .map(compBusinessInfo -> {
-                    compBusinessInfo.setVersion(version);
-                    return compBusinessInfo;
+                .forEach(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(finalVersion);
                 });
         Flux<CompQuality> qompQuality = Mono.just(compWfInfoVo.getCompQualityList()).flatMapMany(Flux::fromIterable);
 
         compWfInfoVo.getCompStandardList().stream()
-                .map(compBusinessInfo -> {
-                    compBusinessInfo.setVersion(version);
-                    return compBusinessInfo;
+                .forEach(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(finalVersion);
                 });
         Flux<CompStandard> qtandard = Mono.just(compWfInfoVo.getCompStandardList()).flatMapMany(Flux::fromIterable);
 
         compWfInfoVo.getCompIpoInfoList().stream()
-                .map(compBusinessInfo -> {
-                    compBusinessInfo.setVersion(version);
-                    return compBusinessInfo;
+                .forEach(compBusinessInfo -> {
+                    compBusinessInfo.setVersion(finalVersion);
                 });
         Flux<CompIpoInfo> qipo = Mono.just(compWfInfoVo.getCompIpoInfoList()).flatMapMany(Flux::fromIterable);
 
         return Flux.merge(
                 compBasicInfoService.save(Mono.just(compWfInfoVo.getCompBasicInfo())),
                 compHonorInfoService.save(Mono.just(compWfInfoVo.getCompHonorInfo())),
-                compBusinessInfoService.insertBatch(bussinessFlux.collectList()),
-                compFinanceService.insertBatch(finnalLst.collectList()),
-                compQualityService.insertBatch(qompQuality.collectList()),
-                compStandardService.insertBatch(qtandard.collectList()),
-                compIpoInfoService.insertBatch(qipo.collectList()),
-                compPersonInfoServicee.insertBatch(periinnfLFux.collectList()),
+
+                compBusinessInfoService.createDelete().where("version", version).and("comp_id", compId)
+                .execute()
+                .then(compBusinessInfoService.insertBatch(bussinessFlux.collectList())),
+
+
+                compFinanceService.createDelete().where("version", version).and("comp_id", compId)
+                .execute()
+                .then(compFinanceService.insertBatch(finnalLst.collectList())),
+
+                compQualityService.createDelete().where("version", version).and("comp_id", compId)
+                        .execute()
+                        .then(compQualityService.insertBatch(qompQuality.collectList())),
+                compStandardService.createDelete().where("version", version).and("comp_id", compId)
+                        .execute()
+                        .then(compStandardService.insertBatch(qtandard.collectList())),
+                compIpoInfoService.createDelete().where("version", version).and("comp_id", compId)
+                        .execute()
+                        .then(compIpoInfoService.insertBatch(qipo.collectList())),
+                compPersonInfoServicee.createDelete().where("version", version).and("comp_id", compId)
+                        .execute()
+                        .then(compPersonInfoServicee.insertBatch(periinnfLFux.collectList())),
                 compStockService.save(Mono.just(compWfInfoVo.getCompStock()))
         );
 

@@ -2,7 +2,9 @@ package org.hswebframework.isdp.sns.entity;
 
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
-//@Table(name = "sns_tag")
+import javax.persistence.Table;
+
+@Table(name = "sns_tag")
 public class SnsTag extends GenericEntity<String> {
 
 	/** 标签引用（帖子/用户自评等）计数 */

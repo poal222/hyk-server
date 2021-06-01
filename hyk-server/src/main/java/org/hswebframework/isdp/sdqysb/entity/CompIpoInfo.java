@@ -70,8 +70,8 @@ public class CompIpoInfo extends GenericEntity<String> {
      */
     @Schema(description = "中介机构名称")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
-    @Column(name = "is_delete", length = 64)
-    private String intermediary_name;
+    @Column(name = "intermediary_name", length = 64)
+    private String intermediaryName;
     /**
      * 中介机构联系人
      */

@@ -2,10 +2,12 @@ package org.hswebframework.isdp.sns.entity;
 
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
+import javax.persistence.Table;
+
 /**
  *  领域表
  */
-//@Table(name="SNS_DOMAIN")
+@Table(name="SNS_DOMAIN")
 public class SnsDomain extends GenericEntity<String> {
 
 	/** 领域标题 */

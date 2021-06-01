@@ -2,10 +2,12 @@ package org.hswebframework.isdp.sns.entity;
 
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
+import javax.persistence.Table;
+
 /**
  * 关注表
  */
-//@Table(name="Sns_follow")
+@Table(name="Sns_follow")
 public class SnsFollow extends GenericEntity<String> {
 
 	/**
