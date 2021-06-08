@@ -446,38 +446,39 @@ public class CompWorkFlowController implements ReactiveCrudController<CompBasicI
                 compBasicInfoService.createQuery().where("version", version2).fetchOne(),
                 (t1, t2) -> {
                     if (!t1.getCompName().equalsIgnoreCase(t2.getCompName()))
-                        list.add(t1.getCompName() + "变更为" + t2.getCompName());
+                        list.add("CompName:"+t1.getCompName() + "变更为" + t2.getCompName());
                     if (!t1.getUsccId().equalsIgnoreCase(t2.getUsccId()))
-                        list.add(t1.getUsccId() + "变更为" + t2.getUsccId());
+                        list.add("UsccId:"+t1.getUsccId() + "变更为" + t2.getUsccId());
                     if (!t1.getRegAddress().equalsIgnoreCase(t2.getRegAddress()))
-                        list.add(t1.getRegAddress() + "变更为" + t2.getRegAddress());
+                        list.add("RegAddress:"+t1.getRegAddress() + "变更为" + t2.getRegAddress());
                     if (!t1.getRegTime().equalsIgnoreCase(t2.getRegTime()))
-                        list.add(t1.getRegTime() + "变更为" + t2.getRegTime());
+                        list.add("RegTime:"+t1.getRegTime() + "变更为" + t2.getRegTime());
                     if (!t1.getRegCapital().equalsIgnoreCase(t2.getRegCapital()))
-                        list.add(t1.getRegCapital() + "变更为" + t2.getRegCapital());
+                        list.add("RegCapital:"+t1.getRegCapital() + "变更为" + t2.getRegCapital());
                     if (!t1.getRegCity().equalsIgnoreCase(t2.getRegCity()))
-                        list.add(t1.getRegCity() + "变更为" + t2.getRegCity());
+                        list.add("RegCity:"+t1.getRegCity() + "变更为" + t2.getRegCity());
                     if (!t1.getRegCounty().equalsIgnoreCase(t2.getRegCounty()))
-                        list.add(t1.getRegCounty() + "变更为" + t2.getRegCounty());
+                        list.add("RegCounty:"+t1.getRegCounty() + "变更为" + t2.getRegCounty());
                     if (!t1.getCompNature().equalsIgnoreCase(t2.getCompNature()))
-                        list.add(t1.getCompNature() + "变更为" + t2.getCompNature());
+                        list.add("CompNature:"+t1.getCompNature() + "变更为" + t2.getCompNature());
                     if (!t1.getIndustry().equalsIgnoreCase(t2.getIndustry()))
-                        list.add(t1.getIndustry() + "变更为" + t2.getIndustry());
+                        list.add("Industry:"+t1.getIndustry() + "变更为" + t2.getIndustry());
                     if (!t1.getCompIntroduction().equalsIgnoreCase(t2.getCompIntroduction()))
-                        list.add(t1.getCompIntroduction() + "变更为" + t2.getCompIntroduction());
+                        list.add("CompIntroduction:"+t1.getCompIntroduction() + "变更为" + t2.getCompIntroduction());
                     if (!t1.getStandardTypeId().equalsIgnoreCase(t2.getStandardTypeId()))
-                        list.add(t1.getStandardTypeId() + "变更为" + t2.getStandardTypeId());
+                        list.add("StandardTypeId:"+t1.getStandardTypeId() + "变更为" + t2.getStandardTypeId());
                     if (!t1.getIsGuidance().equalsIgnoreCase(t2.getIsGuidance()))
-                        list.add(t1.getIsGuidance() + "变更为" + t2.getIsGuidance());
+                        list.add("IsGuidance:"+t1.getIsGuidance() + "变更为" + t2.getIsGuidance());
                     if (!t1.getIsOpen().equalsIgnoreCase(t2.getIsOpen()))
-                        list.add(t1.getIsOpen() + "变更为" + t2.getIsOpen());
+                        list.add("IsOpen:"+t1.getIsOpen() + "变更为" + t2.getIsOpen());
 
                     return list;
                 }
-        ).zipWith(compareBussinessInfo(version1,version2),(t1,t2)->{
-            t1.add(t2);
-            return t1;
-        });
+        );
+//        ).zipWith(compareBussinessInfo(version1,version2),(t1,t2)->{
+//            t1.add(t2);
+//            return t1;
+//        });
     }
 
 
@@ -494,7 +495,7 @@ public class CompWorkFlowController implements ReactiveCrudController<CompBasicI
                     if (!compBusinessInfo.getMajorBussiness().equalsIgnoreCase(compBusinessInfo1.getMajorBussiness()))
                         list.add(compBusinessInfo.getMajorBussiness() + "变更为" + compBusinessInfo1.getMajorBussiness());
                     if (!compBusinessInfo.getOwnStatus().equalsIgnoreCase(compBusinessInfo1.getOwnStatus()))
-                        list.add(compBusinessInfo.getOwnStatus() + "变更为" + compBusinessInfo1.getOwnStatus());
+                        list.add(compBusinessInfo.getOwnStatus() + " 变更为" + compBusinessInfo1.getOwnStatus());
                 });
             });
             return list;

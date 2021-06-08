@@ -6,6 +6,7 @@ import org.hswebframework.isdp.sns.entity.SnsDomain;
 import org.hswebframework.isdp.sns.service.SnsDomainService;
 import org.hswebframework.web.crud.web.reactive.ReactiveCrudController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 在当前的sns设计中，没有任何的层级概念，只是单纯的（领域对标签），1：n的关系，且标签可以从属于多个领域
  */
 @RestController
+@RequestMapping("/domain")
 public class SnsDomainCmd implements ReactiveCrudController<SnsDomain, String> {
 
     @Autowired
