@@ -41,7 +41,7 @@ public class UserDetailEntity extends GenericEntity<String> {
 	 * 企业级开发平台拓展信息 主岗信息
 	 */
 	@Column(nullable = false,length = 64)
-	@NotBlank(message = "所属公司id")
+//	@NotBlank(message = "所属公司id")
 	private String coId;
 	@Column(nullable = false,length = 64)
 //	@NotBlank(message = "所属部门id")

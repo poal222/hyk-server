@@ -12,10 +12,14 @@ import java.time.Duration;
 @Getter
 @Setter
 public class CaptchaProperties {
+
+    //是否开启验证码
     private boolean enabled = false;
 
+    //过期时间
     private Duration ttl = Duration.ofMinutes(2);
 
+    //验证码
     private CaptchaType type = CaptchaType.image;
 
     public enum CaptchaType {

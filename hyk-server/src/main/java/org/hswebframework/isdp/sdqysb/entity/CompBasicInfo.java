@@ -25,6 +25,13 @@ public class CompBasicInfo extends GenericEntity<String> {
     @Column(name = "comp_id", length = 64)
     private String compId;
     /**
+     * 企业名称
+     */
+    @Schema(description = "企业名称")
+    @ColumnType(jdbcType = JDBCType.VARCHAR)
+    @Column(name = "comp_name", length = 64)
+    private String compName;
+    /**
      * 统一社会信用代码
      */
     @Schema(description = "统一社会信用代码")
@@ -155,7 +162,7 @@ public class CompBasicInfo extends GenericEntity<String> {
     /**
      * 状态;0：保存不提交，1：提交审核，2：审核不通过，3：审核通过
      */
-    @Schema(description = "状态")
+    @Schema(description = "状态, 状态;0：保存不提交，1：提交审核，2：审核不通过，3：审核通过")
     @ColumnType(jdbcType = JDBCType.VARCHAR)
     @Column(name = "status", length = 10)
     private String status;

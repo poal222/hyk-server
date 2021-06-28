@@ -1,15 +1,20 @@
 package org.hswebframework.isdp.organization.web;
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hswebframework.isdp.organization.UserDetailService;
 import org.hswebframework.isdp.organization.entity.UserDetail;
 import org.hswebframework.isdp.organization.vo.IsdpPassword;
 import org.hswebframework.utils.RandomUtil;
 import org.hswebframework.web.authorization.Authentication;
+import org.hswebframework.web.authorization.Permission;
 import org.hswebframework.web.authorization.annotation.Resource;
+import org.hswebframework.web.authorization.annotation.ResourceAction;
 import org.hswebframework.web.authorization.exception.UnAuthorizedException;
+import org.hswebframework.web.system.authorization.api.PasswordEncoder;
 import org.hswebframework.web.system.authorization.api.entity.UserEntity;
 import org.hswebframework.web.system.authorization.api.service.reactive.ReactiveUserService;
 import org.hswebframework.web.system.authorization.defaults.service.DefaultReactiveUserService;
@@ -29,8 +34,10 @@ public class IsdpUsersController {
   @Autowired
 	private ReactiveUserService reactiveUserService;
 
-	@Autowired
+	@Autowired(required = false)
 	private DefaultReactiveUserService defaultReactiveUserService;
+    @Autowired(required = false)
+    private PasswordEncoder passwordEncoder = (password, salt) -> DigestUtils.md5Hex(String.format("hsweb.%s.framework.%s", password, salt));
 
 
 	/**
@@ -40,6 +47,7 @@ public class IsdpUsersController {
      */
     @GetMapping
     @Operation(summary = "获取当前登录用户详情")
+    @ResourceAction(id = "getCurrentLoginUserDetail", name = "获取当前登录用户详情")
     public Mono<UserDetail> getCurrentLoginUserDetail() {
         return Authentication
                 .currentReactive()
@@ -54,6 +62,7 @@ public class IsdpUsersController {
      */
     @GetMapping(value = "/getUserProfileById")
     @Operation(summary = "根据id获取用户的详细信息,包含扩展信息（租户及组织机构信息）")
+    @ResourceAction(id = "getUserProfileById", name = "根据id获取用户的详细信息")
     public Mono<UserDetail> getUserProfileById(@Parameter(name = "userId", description = "用户id") @Param(value = "userId") String userId) {
         return Mono.zip(
                 userDetailService.findUserDetail(userId),
@@ -68,6 +77,7 @@ public class IsdpUsersController {
      */
     @PutMapping("/createUserDetail")
     @Operation(summary = "新增用户")
+    @ResourceAction(id = "createUserDetail", name = "新增用户")
     public Mono<Void> createUserDetail(@RequestBody Mono<UserDetail> request) {
         return request.flatMap(userDetail -> {
             String userId = userDetail.getId();
@@ -85,6 +95,7 @@ public class IsdpUsersController {
      */
     @PutMapping
     @Operation(summary = "保存当前用户详情")
+    @ResourceAction(id = "saveUserDetail", name = "保存当前用户详情")
     public Mono<Void> saveUserDetail(@RequestBody Mono<UserDetail> request) {
         return Authentication
                 .currentReactive()
@@ -100,12 +111,17 @@ public class IsdpUsersController {
      */
     @PostMapping(value = "/restPassword")
     @Operation(summary = "重置密码")
+    @ResourceAction(id = "restPassword", name = "重置密码")
     public Mono<Integer> restPassword(@RequestBody Mono<IsdpPassword> isdpPasswordMono) {
         return isdpPasswordMono.flatMap(userEntity -> {
-            return defaultReactiveUserService.createUpdate()
-                    .where(UserEntity::getId, userEntity.getUserId())
-                    .set(UserEntity::getPassword, userEntity.getNewPassword())
-                    .execute();
+            return defaultReactiveUserService.findById(userEntity.getUserId())
+                    .flatMap(userEntity1 -> {
+                       return defaultReactiveUserService.createUpdate()
+                                .where(UserEntity::getId, userEntity1.getId())
+                                .set(UserEntity::getPassword, passwordEncoder.encode(userEntity.getNewPassword(), userEntity1.getSalt()))
+                                .execute();
+                    });
+
         });
     }
 

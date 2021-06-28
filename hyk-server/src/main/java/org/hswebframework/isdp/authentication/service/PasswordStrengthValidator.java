@@ -1,4 +1,4 @@
-package org.hswebframework.isdp.organization;
+package org.hswebframework.isdp.authentication.service;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,13 @@ import org.springframework.util.StringUtils;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 密码验证器，用于过滤简单密码.
+ *
+ * @author zhouhao
+ * @see PasswordValidator
+ * @since 1.0
+ */
 @Component
 @ConfigurationProperties(prefix = "hsweb.user.password.validator")
 @Getter
@@ -20,11 +27,11 @@ public class PasswordStrengthValidator implements PasswordValidator {
     public static final String REG_NUMBER = ".*\\d+.*";
 
     private String[] regex = {
-        ".*\\d+.*", //数字
-        ".*[A-Z]+.*", //大写字母
-        ".*[a-z]+.*", //小写字母
-        ".*[^x00-xff]+.*", //2位字符(中文?)
-        ".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*", //特殊符号
+            ".*\\d+.*", //数字
+            ".*[A-Z]+.*", //大写字母
+            ".*[a-z]+.*", //小写字母
+            ".*[^x00-xff]+.*", //2位字符(中文?)
+            ".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*", //特殊符号
     };
 
     private Set<String> blackList = new HashSet<>();

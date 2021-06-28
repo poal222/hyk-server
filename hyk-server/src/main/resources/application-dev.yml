@@ -46,6 +46,7 @@ logging:
     io.micrometer: warn
     system: debug
     org.isdp.hyk: debug
+    org.isdp.sdqysb: debug
 
 hsweb:
   webflux:
@@ -91,7 +92,7 @@ springdoc:
     - group: authorization
       packages-to-scan:
         - org.hswebframework.isdp.authentication
-
+        - org.hswebframework.web.authorization.basic.web
     - group: sdqysb
       packages-to-scan:
         - org.hswebframework.isdp.sdqysb.web

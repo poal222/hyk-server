@@ -78,16 +78,20 @@ public class OrganizationController {
                 .as(dimensionService::queryPager);
     }
 
-    //    @GetMapping("/_queryWithTenant")
-//    @QueryAction
-//    @QueryOperation(summary = "查询结构列表")
-//    public Mono<PagerResult<DimensionEntity>> queryWithTenant(@Parameter(hidden = true) QueryParamEntity entity) {
-//        return entity
-//                .toNestQuery(q -> q.where(DimensionEntity::getTypeId, orgDimensionTypeId))
-//                .execute(Mono::just)
-//                .as(dimensionService::queryPager);
-//    }
-//    @PatchMapping
+    @GetMapping("/_all/treeWithNoAuth")
+    @QueryAction
+    @Authorize(ignore = true)
+    @QueryOperation(summary = "获取全部机构信息(树结构,不用权限)")
+    public Flux<DimensionEntity> queryWithTenant(@Parameter(hidden = true) QueryParamEntity entity) {
+        return dimensionService
+                .createQuery()
+                .where(DimensionEntity::getTypeId, orgDimensionTypeId)
+                .fetch()
+                .collectList()
+                .flatMapIterable(list -> TreeSupportEntity.list2tree(list, DimensionEntity::setChildren));
+    }
+
+    //    @PatchMapping
 //    @SaveAction
 //    @Operation(summary = "保存机构信息")
 //    public Mono<Void> saveOrg(@RequestBody Flux<DimensionEntity> entityFlux) {
@@ -108,6 +112,24 @@ public class OrganizationController {
                 orgExtendService.save(Mono.just(organExtendEntity)),
                 (count, count1) -> 1
         );
+    }
+
+    @GetMapping("/_query/_children/tree")
+    @QueryAction
+    @QueryOperation(summary = "查询机构列表(包含子机构)树结构")
+    public Mono<List<DimensionEntity>> queryChildrenTree(@Parameter(hidden = true) QueryParamEntity entity) {
+        return entity
+                .toNestQuery(q -> q.where(DimensionEntity::getTypeId, orgDimensionTypeId))
+                .execute(dimensionService::queryIncludeChildrenTree);
+    }
+
+    @GetMapping("/_query/_children")
+    @QueryAction
+    @QueryOperation(summary = "查询机构列表(包含子机构)")
+    public Flux<DimensionEntity> queryChildren(@Parameter(hidden = true) QueryParamEntity entity) {
+        return entity
+                .toNestQuery(q -> q.where(DimensionEntity::getTypeId, orgDimensionTypeId))
+                .execute(dimensionService::queryIncludeChildren);
     }
 
     @GetMapping("/{id}")

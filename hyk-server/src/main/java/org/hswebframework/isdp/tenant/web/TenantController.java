@@ -22,7 +22,10 @@ import java.util.function.Function;
 
 /**
  * 管理端,租户管理
+ * Tenants 租户
+ * 是一个独立的商业实体：比如个人或组织，可以拥有若产生多个设备或资产。一个租户可有多个租户管理员用户及多个客户。
  *
+ * 可将它理解为代理商，中间商，如中国移动是一个 tenant, 承包了某地区的所有项目，信息保存在 tenant 表中。
  * @author zhouhao
  * @since 1.3
  */
