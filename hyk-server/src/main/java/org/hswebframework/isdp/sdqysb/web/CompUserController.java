@@ -25,7 +25,7 @@ import java.util.UUID;
 
 @RequestMapping("/sdsb/compUsers")
 @RestController
-@Resource(id = "sdsb.compUsers", name = "企业用户管理")
+@Resource(id = "sdsb_compUsers", name = "企业用户管理")
 @Tag(name = "企业用户管理")
 public class CompUserController implements ReactiveCrudController<CompUser, String> {
 

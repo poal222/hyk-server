@@ -2,8 +2,10 @@ package org.hswebframework.isdp.sns.entity;
 
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
+import javax.persistence.Table;
 
-//@Table(name="Sns_report")
+
+@Table(name="Sns_report")
 public class SnsReport extends GenericEntity<String> {
 
 	/** 举报人 id */

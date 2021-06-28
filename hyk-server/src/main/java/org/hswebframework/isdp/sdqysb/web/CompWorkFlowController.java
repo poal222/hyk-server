@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 
 @RequestMapping("/sdsb/workflow")
 @RestController
-@Resource(id = "sdsb.CompWorkFlowController", name = "企业信息上报审批流程管理")
+@Resource(id = "sdsb_CompWorkFlowController", name = "企业信息上报审批流程管理")
 @Tag(name = "企业信息上报审批流程管理")
 public class CompWorkFlowController implements ReactiveCrudController<CompBasicInfo, String> {
     /**

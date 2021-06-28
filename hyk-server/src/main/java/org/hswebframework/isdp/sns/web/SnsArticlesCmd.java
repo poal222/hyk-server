@@ -26,7 +26,7 @@ import java.io.Serializable;
 @Tag(name = "文章管理", description = "文章管理")
 @RestController
 @RequestMapping("/sns/articles")
-@Resource(id = "sns-articles", name = "文章管理")
+@Resource(id = "sns_articles", name = "文章管理")
 @Authorize
 public class SnsArticlesCmd implements ReactiveCrudController<SnsArticle, String> {
 

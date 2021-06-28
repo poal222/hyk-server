@@ -20,10 +20,10 @@ spring:
     static-locations: file:./static,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/, classpath:/public/
   r2dbc:
     #    url: r2dbc:postgresql://localhost:5432/jetlinks #postgresql请使用此配置
-    url: r2dbc:mysql://localhost:3306/hyk_db # mysql请使用此配置
+    url: r2dbc:mysql://wglnint.club:3306/hyk_db # mysql请使用此配置
 #    url: r2dbc:h2:file:///./data/h2db/jetlinks
     username: root
-    password: rootroot
+    password: Pas1w0rd!@
 #  redis:
 #    host: 127.0.0.1
 #    port: 6379
@@ -68,7 +68,7 @@ hsweb:
   file:
     upload:
       static-file-path: ./static/upload
-      static-location: http://localhost:8844/upload
+      static-location: http://wglnint:8844/upload
   authorize:
     auto-parse: true
   cache:

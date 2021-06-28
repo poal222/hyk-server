@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 @RequestMapping("/sdsb/CompInfo")
 @RestController
-@Resource(id = "sdsb.CompCrudController", name = "企业填报信息管理")
+@Resource(id = "sdsb_CompCrudController", name = "企业填报信息管理")
 @Tag(name = "企业填报信息管理")
 public class CompCrudController implements ReactiveCrudController<CompBasicInfo, String> {
     /**

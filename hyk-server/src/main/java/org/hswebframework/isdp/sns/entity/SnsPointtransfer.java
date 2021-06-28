@@ -2,10 +2,13 @@ package org.hswebframework.isdp.sns.entity;
 
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
+import javax.persistence.Table;
+
 /**
+ * 资金流水表
  * @author 王岗
  */
-//@Table(name="sns_pointtransfer")
+@Table(name="sns_pointtransfer")
 public class SnsPointtransfer extends GenericEntity<String> {
 
 	/** 源账户 id */
