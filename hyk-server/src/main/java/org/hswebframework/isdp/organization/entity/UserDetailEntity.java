@@ -35,6 +35,11 @@ public class UserDetailEntity extends GenericEntity<String> {
 
     @Column(length = 2000)
     private String description;
+    /**
+     * 自定义标签
+     */
+    @Column(length = 2000)
+    private String tags;
 
 
 	/**

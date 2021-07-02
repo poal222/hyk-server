@@ -1,6 +1,8 @@
 package org.hswebframework.isdp.sns.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.hswebframework.ezorm.rdb.mapping.annotation.ColumnType;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
@@ -9,6 +11,8 @@ import javax.persistence.Table;
 import java.sql.JDBCType;
 
 @Table(name = "sns_tag")
+@Setter
+@Getter
 public class SnsTag extends GenericEntity<String> {
 
 	/** 标签引用（帖子/用户自评等）计数 */

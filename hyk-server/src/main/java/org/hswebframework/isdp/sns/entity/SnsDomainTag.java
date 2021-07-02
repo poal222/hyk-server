@@ -1,6 +1,8 @@
 package org.hswebframework.isdp.sns.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 import org.hswebframework.web.api.crud.entity.GenericEntity;
 
 import javax.persistence.Column;
@@ -10,6 +12,8 @@ import javax.persistence.Table;
  * 领域 - 标签关联表
  */
 @Table(name="Sns_domain_tag")
+@Getter
+@Setter
 public class SnsDomainTag extends GenericEntity<String> {
 
 	/** 领域 id */
